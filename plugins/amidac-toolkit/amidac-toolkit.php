@@ -21,6 +21,7 @@ $amidac_toolkit_modules = array(
     'metaboxes',
     'templates',
     'shortcodes',
+    'elementor',
 );
 
 foreach ( $amidac_toolkit_modules as $module ) {
