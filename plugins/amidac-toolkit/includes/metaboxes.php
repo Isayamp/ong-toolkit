@@ -212,7 +212,46 @@ function amidac_toolkit_projet_stats_callback( $post ) {
                    value="<?php echo esc_attr( $budget_usd ); ?>" min="0" placeholder="Ex: 50000" />
         </div>
     </div>
+
     <?php
+    $labels  = amidac_toolkit_stats_labels();
+    $visible = amidac_toolkit_stats_visibles( $post->ID );
+    ?>
+    <p style="margin:16px 0 6px;font-weight:600;">Statistiques à afficher sur la fiche</p>
+    <input type="hidden" name="amidac_stats_visibles_present" value="1" />
+    <?php foreach ( $labels as $key => $label ) : ?>
+        <label style="display:inline-block;margin-right:16px;">
+            <input type="checkbox" name="amidac_stats_visibles[]" value="<?php echo esc_attr( $key ); ?>"
+                <?php checked( in_array( $key, $visible, true ) ); ?> />
+            <?php echo esc_html( $label ); ?>
+        </label>
+    <?php endforeach; ?>
+    <p class="description">Une statistique cochée mais laissée vide n'est pas affichée.</p>
+    <?php
+}
+
+/**
+ * Statistiques disponibles : clé => libellé.
+ */
+function amidac_toolkit_stats_labels() {
+    return array(
+        'beneficiaires' => __( 'Bénéficiaires directs', 'amidac-toolkit' ),
+        'menages'       => __( 'Ménages touchés', 'amidac-toolkit' ),
+        'femmes_pct'    => __( '% de femmes', 'amidac-toolkit' ),
+        'aires_sante'   => __( 'Aires de santé', 'amidac-toolkit' ),
+        'villages'      => __( 'Villages couverts', 'amidac-toolkit' ),
+    );
+}
+
+/**
+ * Clés des statistiques à afficher ; toutes tant que rien n'a été choisi.
+ */
+function amidac_toolkit_stats_visibles( $post_id ) {
+    $saved = get_post_meta( $post_id, '_amidac_stats_visibles', true );
+    if ( ! is_array( $saved ) ) {
+        return array_keys( amidac_toolkit_stats_labels() );
+    }
+    return $saved;
 }
 
 /**
@@ -315,6 +354,13 @@ function amidac_toolkit_save_projet_meta( $post_id ) {
         if ( isset( $_POST[ $post_key ] ) ) {
             update_post_meta( $post_id, $meta_key, absint( $_POST[ $post_key ] ) );
         }
+    }
+
+    // Statistiques affichées
+    if ( isset( $_POST['amidac_stats_visibles_present'] ) ) {
+        $choisies = isset( $_POST['amidac_stats_visibles'] ) ? (array) wp_unslash( $_POST['amidac_stats_visibles'] ) : array();
+        $choisies = array_values( array_intersect( array_map( 'sanitize_key', $choisies ), array_keys( amidac_toolkit_stats_labels() ) ) );
+        update_post_meta( $post_id, '_amidac_stats_visibles', $choisies );
     }
 
     // Champs URL
