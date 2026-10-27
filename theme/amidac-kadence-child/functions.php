@@ -400,7 +400,6 @@ $amidac_includes = array(
     '/inc/metaboxes.php',
     '/inc/admin.php',
     '/inc/programs.php',
-    '/elementor/elementor-loader.php',  // Widgets Elementor
 );
 
 foreach ( $amidac_includes as $file ) {
