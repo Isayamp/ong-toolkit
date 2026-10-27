@@ -1,0 +1,180 @@
+/* =============================================================================
+   AMIDAC — CSS COMPLÉMENTAIRE (custom.css) - MODIFIÉ
+   Composants additionnels
+   
+   MODIFICATIONS: Suppression des sections header/footer/back-to-top/topbar
+   ============================================================================= */
+
+/* =============================================================================
+   STATISTIQUES
+   ============================================================================= */
+.amidac-stat {
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.amidac-stat__number {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    color: var(--amidac-primary);
+    line-height: 1;
+    margin-bottom: var(--spacing-sm);
+}
+
+.amidac-stat--secondary .amidac-stat__number { color: var(--amidac-secondary); }
+.amidac-stat--dark .amidac-stat__number      { color: var(--amidac-dark); }
+.amidac-stat--white .amidac-stat__number     { color: var(--amidac-white); }
+
+.amidac-stat__label {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--amidac-text-muted);
+}
+
+/* =============================================================================
+   ALERTES
+   ============================================================================= */
+.amidac-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    border-left: 4px solid;
+    margin: var(--spacing-lg) 0;
+}
+
+.amidac-alert--info    { background: #EBF8FF; border-color: #3182CE; color: #2B6CB0; }
+.amidac-alert--success { background: #F0FFF4; border-color: #38A169; color: #276749; }
+.amidac-alert--warning { background: #FFFAF0; border-color: #DD6B20; color: #C05621; }
+.amidac-alert--danger  { background: #FFF5F5; border-color: #E53E3E; color: #C53030; }
+
+.amidac-alert__icon {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    flex-shrink: 0;
+}
+
+.amidac-alert__body p:last-child { margin-bottom: 0; }
+.amidac-alert__title {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-family: var(--font-heading);
+}
+
+/* =============================================================================
+   RÉSEAUX SOCIAUX
+   ============================================================================= */
+.amidac-social-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.amidac-social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: rgba(255,255,255,0.1);
+    color: var(--amidac-white) !important;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.amidac-social-links a:hover {
+    background: var(--amidac-secondary);
+    transform: translateY(-3px);
+}
+
+/* Variante sombre (sur fond clair) */
+.amidac-social-links.dark a {
+    background: var(--amidac-primary-bg);
+    color: var(--amidac-primary) !important;
+}
+
+.amidac-social-links.dark a:hover {
+    background: var(--amidac-primary);
+    color: var(--amidac-white) !important;
+}
+
+/* =============================================================================
+   FIL D'ARIANE
+   ============================================================================= */
+.amidac-breadcrumbs {
+    margin-bottom: var(--spacing-lg);
+}
+
+.breadcrumb-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    color: var(--amidac-text-muted);
+}
+
+.breadcrumb-list a {
+    color: var(--amidac-primary);
+}
+
+.amidac-breadcrumb-sep {
+    color: var(--amidac-border);
+    font-weight: 300;
+}
+
+/* =============================================================================
+   ANIMATIONS (Intersection Observer)
+   ============================================================================= */
+.amidac-animate,
+.amidac-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.amidac-animate.is-animated,
+.amidac-card.is-animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Délais en cascade */
+.amidac-card:nth-child(2) { transition-delay: 0.1s; }
+.amidac-card:nth-child(3) { transition-delay: 0.2s; }
+.amidac-card:nth-child(4) { transition-delay: 0.3s; }
+
+/* =============================================================================
+   THUMBNAIL PLACEHOLDER
+   ============================================================================= */
+.amidac-thumbnail-placeholder {
+    width: 100%;
+    aspect-ratio: 3/2;
+    background: linear-gradient(135deg, var(--amidac-primary-bg), var(--amidac-border));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+}
+
+.amidac-thumbnail-placeholder span {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--amidac-primary);
+    text-transform: uppercase;
+    opacity: 0.5;
+}

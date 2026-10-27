@@ -1,0 +1,612 @@
+/*
+ * Theme Name:        AMIDAC - Kadence Child Theme
+ * Theme URI:         https://amidac.org
+ * Description:       Child theme officiel de AMIDAC asbl, basé sur Kadence WP. Développé par Msc. Isaya M'lela Pombo — Emo Touch Group.
+ * Author:            Isaya M'lela Pombo — Emo Touch Group
+ * Author URI:        https://emotouchgroup.com
+ * Template:          kadence
+ * Version:           1.0.0 (MODIFIED)
+ * Text Domain:       amidac-kadence-child
+ * License:           GNU General Public License v2 or later
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+ * Tags:              kadence, child-theme, amidac, asbl, ong
+ *
+ * MODIFICATIONS: Header et Footer styles commentés (gérés via Elementor custom widgets)
+ */
+
+/* =============================================================================
+   VARIABLES GLOBALES — IDENTITÉ VISUELLE AMIDAC
+   ============================================================================= */
+:root {
+    /* Couleurs principales */
+    --amidac-primary:       #005A9C;   /* Bleu institutionnel */
+    --amidac-secondary:     #F5A623;   /* Or/Jaune — accent */
+    --amidac-dark:          #1A1A2E;   /* Fond sombre */
+    --amidac-light:         #F7F9FC;   /* Fond clair */
+    --amidac-white:         #FFFFFF;
+    --amidac-text:          #2D3748;
+    --amidac-text-muted:    #718096;
+    --amidac-border:        #E2E8F0;
+    --amidac-success:       #27AE60;
+    --amidac-danger:        #E74C3C;
+
+    /* Nuances de la couleur primaire */
+    --amidac-primary-light: #0070C5;
+    --amidac-primary-dark:  #004070;
+    --amidac-primary-bg:    #EBF4FF;
+
+    /* Typographie */
+    --font-heading:  'Montserrat', sans-serif;
+    --font-body:     'Open Sans', sans-serif;
+    --font-accent:   'Merriweather', serif;
+
+    /* Espacements */
+    --spacing-xs:   0.25rem;
+    --spacing-sm:   0.5rem;
+    --spacing-md:   1rem;
+    --spacing-lg:   1.5rem;
+    --spacing-xl:   2.5rem;
+    --spacing-2xl:  4rem;
+
+    /* Border radius */
+    --radius-sm:    4px;
+    --radius-md:    8px;
+    --radius-lg:    16px;
+    --radius-full:  9999px;
+
+    /* Ombres */
+    --shadow-sm:    0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md:    0 4px 12px rgba(0,0,0,0.10);
+    --shadow-lg:    0 10px 30px rgba(0,0,0,0.12);
+    --shadow-blue:  0 4px 20px rgba(0, 90, 156, 0.25);
+
+    /* Transitions */
+    --transition:   all 0.3s ease;
+}
+
+/* =============================================================================
+   RESET & BASE
+   ============================================================================= */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--amidac-text);
+    background-color: var(--amidac-white);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: var(--amidac-primary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--amidac-primary-light);
+}
+
+/* =============================================================================
+   TYPOGRAPHIE
+   ============================================================================= */
+h1, h2, h3, h4, h5, h6,
+.wp-block-heading {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--amidac-dark);
+    line-height: 1.25;
+    margin-bottom: var(--spacing-md);
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.6rem, 4vw, 2.5rem); }
+h3 { font-size: clamp(1.3rem, 3vw, 1.75rem); }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.1rem; }
+h6 { font-size: 1rem; }
+
+p {
+    margin-bottom: var(--spacing-md);
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.lead {
+    font-size: 1.2rem;
+    color: var(--amidac-text-muted);
+    line-height: 1.7;
+}
+
+blockquote {
+    border-left: 4px solid var(--amidac-secondary);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--amidac-primary-bg);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-family: var(--font-accent);
+    font-style: italic;
+    color: var(--amidac-primary-dark);
+    margin: var(--spacing-xl) 0;
+}
+
+/* =============================================================================
+   HEADER & NAVIGATION — DÉACTIVÉ
+   ============================================================================= */
+/* NOTE: Header est géré entièrement via Elementor custom widget
+   Les styles Kadence suivants ont été commentés pour éviter les conflits */
+
+/*
+.site-header,
+#masthead {
+    background-color: var(--amidac-white) !important;
+    border-bottom: 3px solid var(--amidac-primary) !important;
+    box-shadow: var(--shadow-md) !important;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.site-branding .site-title,
+.site-branding .custom-logo-link {
+    display: flex;
+    align-items: center;
+}
+
+.main-navigation a,
+.kadence-navigation a {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--amidac-dark) !important;
+    padding: var(--spacing-sm) var(--spacing-md) !important;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.main-navigation a:hover,
+.kadence-navigation a:hover,
+.main-navigation .current-menu-item > a,
+.kadence-navigation .current-menu-item > a {
+    color: var(--amidac-primary) !important;
+    background-color: var(--amidac-primary-bg);
+}
+
+.main-navigation .sub-menu,
+.kadence-navigation .sub-menu {
+    border-top: 3px solid var(--amidac-secondary) !important;
+    border-radius: 0 0 var(--radius-md) var(--radius-md) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+*/
+
+/* =============================================================================
+   HERO / BANNER
+   ============================================================================= */
+.amidac-hero {
+    background: linear-gradient(135deg, var(--amidac-primary-dark) 0%, var(--amidac-primary) 60%, var(--amidac-primary-light) 100%);
+    color: var(--amidac-white);
+    padding: var(--spacing-2xl) 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.amidac-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.amidac-hero h1,
+.amidac-hero h2 {
+    color: var(--amidac-white);
+}
+
+.amidac-hero .hero-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    max-width: 600px;
+}
+
+/* =============================================================================
+   BOUTONS
+   ============================================================================= */
+.wp-block-button__link,
+.button,
+button,
+input[type="submit"],
+.amidac-btn {
+    font-family: var(--font-heading) !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    padding: 0.75rem 1.75rem !important;
+    border-radius: var(--radius-full) !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: var(--transition) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+/* Bouton primaire */
+.wp-block-button.is-style-fill .wp-block-button__link,
+.amidac-btn-primary,
+.button,
+input[type="submit"] {
+    background-color: var(--amidac-primary) !important;
+    color: var(--amidac-white) !important;
+    box-shadow: var(--shadow-blue) !important;
+}
+
+.wp-block-button.is-style-fill .wp-block-button__link:hover,
+.amidac-btn-primary:hover,
+.button:hover,
+input[type="submit"]:hover {
+    background-color: var(--amidac-primary-dark) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 24px rgba(0, 90, 156, 0.35) !important;
+}
+
+/* Bouton secondaire / outline */
+.wp-block-button.is-style-outline .wp-block-button__link,
+.amidac-btn-outline {
+    background-color: transparent !important;
+    color: var(--amidac-primary) !important;
+    border: 2px solid var(--amidac-primary) !important;
+    box-shadow: none !important;
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:hover,
+.amidac-btn-outline:hover {
+    background-color: var(--amidac-primary) !important;
+    color: var(--amidac-white) !important;
+}
+
+/* Bouton accent (jaune) */
+.amidac-btn-accent {
+    background-color: var(--amidac-secondary) !important;
+    color: var(--amidac-dark) !important;
+    box-shadow: 0 4px 15px rgba(245, 166, 35, 0.35) !important;
+}
+
+.amidac-btn-accent:hover {
+    background-color: #e09200 !important;
+    transform: translateY(-2px) !important;
+}
+
+/* =============================================================================
+   CARDS / BLOCS
+   ============================================================================= */
+.amidac-card {
+    background: var(--amidac-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-xl);
+    transition: var(--transition);
+    border: 1px solid var(--amidac-border);
+}
+
+.amidac-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--amidac-primary);
+}
+
+.amidac-card-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--amidac-primary-bg);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.amidac-card-icon svg,
+.amidac-card-icon img {
+    width: 28px;
+    height: 28px;
+    color: var(--amidac-primary);
+}
+
+/* =============================================================================
+   FORMULAIRES
+   ============================================================================= */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+input[type="password"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--amidac-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--amidac-text);
+    background-color: var(--amidac-white);
+    transition: var(--transition);
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--amidac-primary);
+    box-shadow: 0 0 0 3px rgba(0, 90, 156, 0.15);
+}
+
+label {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--amidac-dark);
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+/* =============================================================================
+   SECTION TITLES
+   ============================================================================= */
+.amidac-section-title {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.amidac-section-title .pretitle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amidac-secondary);
+    display: block;
+    margin-bottom: var(--spacing-sm);
+}
+
+.amidac-section-title h2 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.amidac-section-title p {
+    color: var(--amidac-text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Décoration titre */
+.amidac-section-title h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--amidac-primary), var(--amidac-secondary));
+    border-radius: var(--radius-full);
+    margin: var(--spacing-md) auto 0;
+}
+
+/* =============================================================================
+   FOOTER — DÉACTIVÉ
+   ============================================================================= */
+/* NOTE: Footer est géré entièrement via Elementor custom widget
+   Les styles Kadence suivants ont été commentés pour éviter les conflits */
+
+/*
+.site-footer,
+#colophon {
+    background-color: var(--amidac-dark) !important;
+    color: rgba(255,255,255,0.8) !important;
+    padding: var(--spacing-2xl) 0 var(--spacing-md) !important;
+}
+
+.site-footer a,
+#colophon a {
+    color: rgba(255,255,255,0.7) !important;
+    transition: var(--transition);
+}
+
+.site-footer a:hover,
+#colophon a:hover {
+    color: var(--amidac-secondary) !important;
+}
+
+.site-footer h3,
+.site-footer h4,
+#colophon h3,
+#colophon h4 {
+    color: var(--amidac-white) !important;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--amidac-secondary);
+    display: inline-block;
+}
+
+.footer-bottom-bar {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-md);
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+}
+*/
+
+/* =============================================================================
+   SIDEBAR / WIDGETS
+   ============================================================================= */
+.widget {
+    margin-bottom: var(--spacing-xl);
+}
+
+.widget-title {
+    font-family: var(--font-heading) !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    color: var(--amidac-primary) !important;
+    border-bottom: 2px solid var(--amidac-secondary) !important;
+    padding-bottom: var(--spacing-sm) !important;
+    margin-bottom: var(--spacing-md) !important;
+}
+
+/* =============================================================================
+   POSTS / ARTICLES
+   ============================================================================= */
+.entry-header .entry-title {
+    color: var(--amidac-dark);
+}
+
+.entry-meta {
+    color: var(--amidac-text-muted);
+    font-size: 0.875rem;
+}
+
+.post-thumbnail {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Category badge */
+.cat-links a {
+    background: var(--amidac-primary-bg);
+    color: var(--amidac-primary);
+    padding: 0.2rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+}
+
+/* =============================================================================
+   PAGINATION
+   ============================================================================= */
+.page-numbers {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    color: var(--amidac-text);
+    border: 2px solid var(--amidac-border);
+}
+
+.page-numbers.current,
+.page-numbers:hover {
+    background-color: var(--amidac-primary);
+    color: var(--amidac-white);
+    border-color: var(--amidac-primary);
+}
+
+/* =============================================================================
+   UTILITAIRES
+   ============================================================================= */
+.amidac-text-primary   { color: var(--amidac-primary); }
+.amidac-text-secondary { color: var(--amidac-secondary); }
+.amidac-text-muted     { color: var(--amidac-text-muted); }
+.amidac-text-white     { color: var(--amidac-white); }
+
+.amidac-bg-primary  { background-color: var(--amidac-primary); }
+.amidac-bg-light    { background-color: var(--amidac-light); }
+.amidac-bg-dark     { background-color: var(--amidac-dark); }
+.amidac-bg-accent   { background-color: var(--amidac-secondary); }
+
+.amidac-section     { padding: var(--spacing-2xl) 0; }
+.amidac-section-lg  { padding: calc(var(--spacing-2xl) * 1.5) 0; }
+
+.text-center { text-align: center; }
+.text-right  { text-align: right; }
+
+.amidac-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.amidac-badge-primary {
+    background: var(--amidac-primary-bg);
+    color: var(--amidac-primary);
+}
+
+.amidac-badge-success {
+    background: #EAFAF1;
+    color: var(--amidac-success);
+}
+
+/* =============================================================================
+   RESPONSIVE
+   ============================================================================= */
+@media (max-width: 768px) {
+    :root {
+        --spacing-xl: 2rem;
+        --spacing-2xl: 3rem;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.6rem; }
+
+    .amidac-hero {
+        padding: var(--spacing-xl) 0;
+        text-align: center;
+    }
+
+    .amidac-card {
+        padding: var(--spacing-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.4rem; }
+}
+
+/* =============================================================================
+   PRINT
+   ============================================================================= */
+@media print {
+    .site-header,
+    .site-footer,
+    .sidebar,
+    .navigation { display: none !important; }
+
+    body { font-size: 12pt; color: #000; }
+    a { color: #000; text-decoration: underline; }
+}
