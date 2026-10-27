@@ -330,3 +330,100 @@ function amidac_save_projet_meta( $post_id ) {
     }
 }
 add_action( 'save_post_amidac_projet', 'amidac_save_projet_meta' );
+// ============================================================================
+// MEMBRES, PARTENAIRES, RAPPORTS
+// ============================================================================
+
+/**
+ * Définition des champs : clé du formulaire => [ libellé, type, clé meta ].
+ */
+function amidac_toolkit_extra_fields() {
+    $td = 'amidac-toolkit';
+
+    return array(
+        'amidac_membre' => array(
+            'title'  => __( 'Informations du membre', $td ),
+            'fields' => array(
+                'amidac_poste'    => array( __( 'Poste / fonction', $td ), 'text',  '_amidac_poste' ),
+                'amidac_email'    => array( __( 'Email', $td ),            'email', '_amidac_email' ),
+                'amidac_linkedin' => array( __( 'Profil LinkedIn', $td ),  'url',   '_amidac_linkedin' ),
+            ),
+        ),
+        'amidac_partenaire' => array(
+            'title'  => __( 'Informations du partenaire', $td ),
+            'fields' => array(
+                'amidac_site_web'  => array( __( 'Site web', $td ),                'url',  '_amidac_site_web' ),
+                'amidac_type_part' => array( __( 'Type (bailleur, ONG...)', $td ), 'text', '_amidac_type_partenaire' ),
+            ),
+        ),
+        'amidac_rapport' => array(
+            'title'  => __( 'Informations du rapport', $td ),
+            'fields' => array(
+                'amidac_annee'       => array( __( 'Année', $td ),                    'number', '_amidac_annee' ),
+                'amidac_type_rapp'   => array( __( 'Type (annuel, évaluation...)', $td ), 'text', '_amidac_type_rapport' ),
+                'amidac_fichier_url' => array( __( 'URL du fichier PDF (médiathèque)', $td ), 'url', '_amidac_fichier_url' ),
+            ),
+        ),
+    );
+}
+
+function amidac_toolkit_register_extra_metaboxes() {
+    foreach ( amidac_toolkit_extra_fields() as $post_type => $def ) {
+        add_meta_box(
+            'amidac_extra_' . $post_type,
+            $def['title'],
+            'amidac_toolkit_extra_metabox_render',
+            $post_type,
+            'normal',
+            'high',
+            array( 'post_type' => $post_type )
+        );
+    }
+}
+add_action( 'add_meta_boxes', 'amidac_toolkit_register_extra_metaboxes' );
+
+function amidac_toolkit_extra_metabox_render( $post, $box ) {
+    $def = amidac_toolkit_extra_fields()[ $box['args']['post_type'] ];
+    wp_nonce_field( 'amidac_extra_save', 'amidac_extra_nonce' );
+
+    echo '<table class="form-table"><tbody>';
+    foreach ( $def['fields'] as $key => $f ) {
+        printf(
+            '<tr><th><label for="%1$s">%2$s</label></th><td><input type="%3$s" id="%1$s" name="%1$s" value="%4$s" class="regular-text"></td></tr>',
+            esc_attr( $key ),
+            esc_html( $f[0] ),
+            esc_attr( $f[1] ),
+            esc_attr( get_post_meta( $post->ID, $f[2], true ) )
+        );
+    }
+    echo '</tbody></table>';
+}
+
+function amidac_toolkit_extra_metabox_save( $post_id, $post ) {
+    if ( ! isset( $_POST['amidac_extra_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['amidac_extra_nonce'] ) ), 'amidac_extra_save' ) ) {
+        return;
+    }
+    if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+
+    $defs = amidac_toolkit_extra_fields();
+    if ( ! isset( $defs[ $post->post_type ] ) ) {
+        return;
+    }
+
+    foreach ( $defs[ $post->post_type ]['fields'] as $key => $f ) {
+        if ( ! isset( $_POST[ $key ] ) ) {
+            continue;
+        }
+        $raw = wp_unslash( $_POST[ $key ] );
+        switch ( $f[1] ) {
+            case 'url':    $value = esc_url_raw( $raw ); break;
+            case 'email':  $value = sanitize_email( $raw ); break;
+            case 'number': $value = absint( $raw ); break;
+            default:       $value = sanitize_text_field( $raw );
+        }
+        update_post_meta( $post_id, $f[2], $value );
+    }
+}
+add_action( 'save_post', 'amidac_toolkit_extra_metabox_save', 10, 2 );
