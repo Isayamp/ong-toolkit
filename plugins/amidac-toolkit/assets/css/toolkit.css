@@ -1,0 +1,56 @@
+:root {
+    --amidac-primary: #005A9C;
+    --amidac-secondary: #F5A623;
+    --amidac-dark: #1A1A2E;
+}
+
+/* Fiche projet */
+.amidac-projet__hero { position: relative; background: var(--amidac-dark); color: #fff; min-height: 320px; overflow: hidden; }
+.amidac-projet__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+.amidac-projet__hero-text { position: relative; max-width: 1100px; margin: 0 auto; padding: 120px 20px 48px; }
+.amidac-projet__hero-text h1 { color: #fff; margin: 12px 0 0; }
+.amidac-projet__statut { margin-left: 8px; font-size: .85rem; opacity: .85; }
+
+.amidac-tag { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: .8rem; font-weight: 600; color: #fff; background: var(--amidac-primary); }
+.amidac-tag-vert { background: #2e9e5b; }
+.amidac-tag-bleu { background: var(--amidac-primary); }
+.amidac-tag-or { background: var(--amidac-secondary); color: var(--amidac-dark); }
+.amidac-tag-rouge { background: #c0392b; }
+.amidac-tag-violet { background: #7d3c98; }
+
+.amidac-projet__body { max-width: 1100px; margin: 0 auto; padding: 32px 20px 64px; }
+.amidac-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 40px; }
+.amidac-stat { background: #f4f7fb; border-radius: 10px; padding: 20px; text-align: center; }
+.amidac-stat strong { display: block; font-size: 1.8rem; color: var(--amidac-primary); }
+.amidac-stat span { font-size: .85rem; color: #555; }
+
+.amidac-projet__layout { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+.amidac-projet__infos { background: #f4f7fb; border-radius: 10px; padding: 24px; align-self: start; }
+.amidac-projet__infos dt { font-weight: 700; margin-top: 12px; }
+.amidac-projet__infos dd { margin: 0; }
+.amidac-projet__video iframe { width: 100%; aspect-ratio: 16 / 9; }
+
+.amidac-btn { display: inline-block; margin-top: 20px; padding: 10px 20px; border-radius: 6px; background: var(--amidac-secondary); color: var(--amidac-dark); font-weight: 700; text-decoration: none; }
+
+/* Liste des projets */
+.amidac-archive { max-width: 1100px; margin: 0 auto; padding: 48px 20px; }
+.amidac-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+.amidac-card { display: block; border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 2px 10px rgba(0, 0, 0, .08); text-decoration: none; color: inherit; }
+.amidac-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
+.amidac-card__body { padding: 16px; }
+
+/* Équipe, partenaires, rapports */
+.amidac-team, .amidac-partners, .amidac-reports { display: grid; gap: 24px; }
+.amidac-team { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.amidac-member { text-align: center; }
+.amidac-member img { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; }
+.amidac-member small { display: block; color: #666; }
+.amidac-partners { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); align-items: center; }
+.amidac-partners img { max-width: 100%; height: 70px; object-fit: contain; filter: grayscale(1); transition: filter .2s; }
+.amidac-partners img:hover { filter: none; }
+.amidac-reports { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.amidac-report { padding: 16px; border: 1px solid #e3e8ef; border-radius: 10px; }
+
+@media (max-width: 800px) {
+    .amidac-projet__layout { grid-template-columns: 1fr; }
+}
