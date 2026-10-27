@@ -279,7 +279,9 @@ function amidac_register_cpt_projets() {
         'show_in_rest'       => true,
     ) );
 }
-add_action( 'init', 'amidac_register_cpt_projets' );
+if ( ! defined( 'AMIDAC_TOOLKIT_VERSION' ) ) {
+    add_action( 'init', 'amidac_register_cpt_projets' );
+}
 
 /**
  * Équipe / Membres
@@ -305,7 +307,9 @@ function amidac_register_cpt_equipe() {
         'show_in_rest' => true,
     ) );
 }
-add_action( 'init', 'amidac_register_cpt_equipe' );
+if ( ! defined( 'AMIDAC_TOOLKIT_VERSION' ) ) {
+    add_action( 'init', 'amidac_register_cpt_equipe' );
+}
 
 /**
  * Partenaires
@@ -326,7 +330,9 @@ function amidac_register_cpt_partenaires() {
         'show_in_rest' => true,
     ) );
 }
-add_action( 'init', 'amidac_register_cpt_partenaires' );
+if ( ! defined( 'AMIDAC_TOOLKIT_VERSION' ) ) {
+    add_action( 'init', 'amidac_register_cpt_partenaires' );
+}
 
 /**
  * Témoignages / Rapports
@@ -348,7 +354,9 @@ function amidac_register_cpt_rapports() {
         'show_in_rest' => true,
     ) );
 }
-add_action( 'init', 'amidac_register_cpt_rapports' );
+if ( ! defined( 'AMIDAC_TOOLKIT_VERSION' ) ) {
+    add_action( 'init', 'amidac_register_cpt_rapports' );
+}
 
 // ============================================================================
 // TAXONOMIES PERSONNALISÉES
@@ -387,7 +395,9 @@ function amidac_register_taxonomies() {
         'show_in_rest' => true,
     ) );
 }
-add_action( 'init', 'amidac_register_taxonomies' );
+if ( ! defined( 'AMIDAC_TOOLKIT_VERSION' ) ) {
+    add_action( 'init', 'amidac_register_taxonomies' );
+}
 
 // ============================================================================
 // INCLUDES — MODULES ADDITIONNELS
@@ -397,10 +407,14 @@ $amidac_includes = array(
     '/inc/customizer.php',
     '/inc/helpers.php',
     '/inc/shortcodes.php',
-    '/inc/metaboxes.php',
     '/inc/admin.php',
     '/inc/programs.php',
 );
+
+// Les métaboxes sont fournies par le plugin AMIDAC Toolkit ; repli si le plugin est inactif.
+if ( ! defined( 'AMIDAC_TOOLKIT_VERSION' ) ) {
+    $amidac_includes[] = '/inc/metaboxes.php';
+}
 
 foreach ( $amidac_includes as $file ) {
     $path = AMIDAC_CHILD_DIR . $file;
