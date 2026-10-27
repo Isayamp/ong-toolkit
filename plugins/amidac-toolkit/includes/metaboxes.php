@@ -12,11 +12,11 @@ defined( 'ABSPATH' ) || exit;
 // ENREGISTREMENT DES METABOXES
 // ============================================================================
 
-function amidac_register_metaboxes() {
+function amidac_toolkit_register_metaboxes() {
     add_meta_box(
         'amidac_projet_details',
         __( '📋 Détails du Projet', 'amidac-toolkit' ),
-        'amidac_projet_details_callback',
+        'amidac_toolkit_projet_details_callback',
         'amidac_projet',
         'normal',
         'high'
@@ -25,7 +25,7 @@ function amidac_register_metaboxes() {
     add_meta_box(
         'amidac_projet_stats',
         __( '📊 Statistiques & Impact', 'amidac-toolkit' ),
-        'amidac_projet_stats_callback',
+        'amidac_toolkit_projet_stats_callback',
         'amidac_projet',
         'normal',
         'default'
@@ -34,13 +34,13 @@ function amidac_register_metaboxes() {
     add_meta_box(
         'amidac_projet_media',
         __( '🖼️ Médias supplémentaires', 'amidac-toolkit' ),
-        'amidac_projet_media_callback',
+        'amidac_toolkit_projet_media_callback',
         'amidac_projet',
         'side',
         'default'
     );
 }
-add_action( 'add_meta_boxes', 'amidac_register_metaboxes' );
+add_action( 'add_meta_boxes', 'amidac_toolkit_register_metaboxes' );
 
 // ============================================================================
 // CALLBACKS — RENDU DES METABOXES
@@ -49,7 +49,7 @@ add_action( 'add_meta_boxes', 'amidac_register_metaboxes' );
 /**
  * Metabox : Détails du projet
  */
-function amidac_projet_details_callback( $post ) {
+function amidac_toolkit_projet_details_callback( $post ) {
     wp_nonce_field( 'amidac_projet_details_nonce', 'amidac_projet_details_nonce_field' );
 
     $secteur_label = get_post_meta( $post->ID, '_amidac_secteur_label', true );
@@ -170,7 +170,7 @@ function amidac_projet_details_callback( $post ) {
 /**
  * Metabox : Statistiques & Impact
  */
-function amidac_projet_stats_callback( $post ) {
+function amidac_toolkit_projet_stats_callback( $post ) {
     wp_nonce_field( 'amidac_projet_stats_nonce', 'amidac_projet_stats_nonce_field' );
 
     $beneficiaires  = get_post_meta( $post->ID, '_amidac_beneficiaires',  true );
@@ -218,7 +218,7 @@ function amidac_projet_stats_callback( $post ) {
 /**
  * Metabox : Médias (sidebar)
  */
-function amidac_projet_media_callback( $post ) {
+function amidac_toolkit_projet_media_callback( $post ) {
     wp_nonce_field( 'amidac_projet_media_nonce', 'amidac_projet_media_nonce_field' );
 
     $video_url    = get_post_meta( $post->ID, '_amidac_video_url',    true );
@@ -247,7 +247,7 @@ function amidac_projet_media_callback( $post ) {
 // SAUVEGARDE DES METABOXES
 // ============================================================================
 
-function amidac_save_projet_meta( $post_id ) {
+function amidac_toolkit_save_projet_meta( $post_id ) {
     // Sécurité : vérification du nonce
     $nonces = array(
         'amidac_projet_details_nonce_field' => 'amidac_projet_details_nonce',
@@ -329,7 +329,7 @@ function amidac_save_projet_meta( $post_id ) {
         }
     }
 }
-add_action( 'save_post_amidac_projet', 'amidac_save_projet_meta' );
+add_action( 'save_post_amidac_projet', 'amidac_toolkit_save_projet_meta' );
 // ============================================================================
 // MEMBRES, PARTENAIRES, RAPPORTS
 // ============================================================================
