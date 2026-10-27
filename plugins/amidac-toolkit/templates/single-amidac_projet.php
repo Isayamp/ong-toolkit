@@ -22,13 +22,8 @@ while ( have_posts() ) :
         return $v ? date_i18n( get_option( 'date_format' ), strtotime( $v ) ) : '';
     };
 
-    $stats = array(
-        'beneficiaires' => __( 'Bénéficiaires directs', 'amidac-toolkit' ),
-        'menages'       => __( 'Ménages touchés', 'amidac-toolkit' ),
-        'femmes_pct'    => __( '% de femmes', 'amidac-toolkit' ),
-        'aires_sante'   => __( 'Aires de santé', 'amidac-toolkit' ),
-        'villages'      => __( 'Villages couverts', 'amidac-toolkit' ),
-    );
+    $stats    = amidac_toolkit_stats_labels();
+    $visibles = amidac_toolkit_stats_visibles( $id );
 
     $infos = array(
         __( 'Zone', 'amidac-toolkit' )        => $m( 'zone' ),
@@ -42,7 +37,7 @@ while ( have_posts() ) :
     $stats_html = '';
     foreach ( $stats as $key => $label ) {
         $v = $m( $key );
-        if ( '' === $v || false === $v ) {
+        if ( ! in_array( $key, $visibles, true ) || '' === $v || false === $v ) {
             continue;
         }
         $stats_html .= sprintf(
@@ -56,9 +51,6 @@ while ( have_posts() ) :
     <article id="post-<?php the_ID(); ?>" <?php post_class( 'amidac-projet' ); ?>>
 
         <header class="amidac-projet__hero">
-            <?php if ( has_post_thumbnail() ) : ?>
-                <?php the_post_thumbnail( 'full', array( 'class' => 'amidac-projet__image' ) ); ?>
-            <?php endif; ?>
             <div class="amidac-projet__hero-text">
                 <?php if ( $secteur ) : ?>
                     <span class="amidac-pill amidac-pill-<?php echo esc_attr( $couleur ); ?>"><?php echo esc_html( $secteur ); ?></span>
@@ -68,9 +60,24 @@ while ( have_posts() ) :
                 <?php endif; ?>
                 <h1><?php the_title(); ?></h1>
             </div>
+            <?php if ( has_post_thumbnail() ) : ?>
+                <figure class="amidac-projet__figure">
+                    <?php the_post_thumbnail( 'full', array( 'class' => 'amidac-projet__image' ) ); ?>
+                </figure>
+            <?php endif; ?>
         </header>
 
         <div class="amidac-projet__body">
+            <?php
+            // Résumé : extrait saisi, sinon extrait généré à partir du contenu.
+            $resume = trim( wp_strip_all_tags( get_the_excerpt() ) );
+            if ( $resume ) :
+                ?>
+                <section class="amidac-projet__resume">
+                    <h2><?php esc_html_e( 'Résumé', 'amidac-toolkit' ); ?></h2>
+                    <p><?php echo esc_html( $resume ); ?></p>
+                </section>
+            <?php endif; ?>
             <?php if ( $stats_html ) : ?>
                 <div class="amidac-stats"><?php echo $stats_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
             <?php endif; ?>
@@ -106,6 +113,40 @@ while ( have_posts() ) :
                 </aside>
             </div>
         </div>
+
+        <?php
+        $autres = new WP_Query(
+            array(
+                'post_type'           => 'amidac_projet',
+                'posts_per_page'      => 3,
+                'post__not_in'        => array( $id ),
+                'ignore_sticky_posts' => true,
+                'no_found_rows'       => true,
+            )
+        );
+        if ( $autres->have_posts() ) :
+            ?>
+            <section class="amidac-projet__autres">
+                <h2><?php esc_html_e( 'Autres projets', 'amidac-toolkit' ); ?></h2>
+                <div class="amidac-grid">
+                    <?php while ( $autres->have_posts() ) : $autres->the_post(); ?>
+                        <a class="amidac-archive-card" href="<?php the_permalink(); ?>">
+                            <?php
+                            if ( has_post_thumbnail() ) {
+                                the_post_thumbnail( 'medium_large' );
+                            }
+                            ?>
+                            <div class="amidac-archive-card__body">
+                                <h3><?php the_title(); ?></h3>
+                            </div>
+                        </a>
+                    <?php endwhile; ?>
+                </div>
+            </section>
+            <?php
+            wp_reset_postdata();
+        endif;
+        ?>
     </article>
     <?php
 endwhile;
