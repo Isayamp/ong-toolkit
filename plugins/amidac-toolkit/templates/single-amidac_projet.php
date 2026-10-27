@@ -61,7 +61,7 @@ while ( have_posts() ) :
             <?php endif; ?>
             <div class="amidac-projet__hero-text">
                 <?php if ( $secteur ) : ?>
-                    <span class="amidac-tag amidac-tag-<?php echo esc_attr( $couleur ); ?>"><?php echo esc_html( $secteur ); ?></span>
+                    <span class="amidac-pill amidac-pill-<?php echo esc_attr( $couleur ); ?>"><?php echo esc_html( $secteur ); ?></span>
                 <?php endif; ?>
                 <?php if ( $statut ) : ?>
                     <span class="amidac-projet__statut"><?php echo esc_html( $statut ); ?></span>
