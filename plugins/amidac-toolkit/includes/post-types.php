@@ -68,13 +68,11 @@ function amidac_toolkit_register_post_types() {
             'all_items'     => __( 'Tous les rapports', $td ),
             'add_new_item'  => __( 'Ajouter un rapport', $td ),
         ),
-        'public'        => true,
-        'has_archive'   => true,
-        'menu_position' => 8,
-        'menu_icon'     => 'dashicons-media-document',
-        'supports'      => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
-        'rewrite'       => array( 'slug' => 'rapports' ),
-        'show_in_rest'  => true,
+        // Géré depuis la page « Rapports » (includes/rapports-admin.php), pas depuis l'éditeur d'articles.
+        'public'       => false,
+        'show_ui'      => false,
+        'supports'     => array( 'title', 'excerpt', 'page-attributes' ),
+        'show_in_rest' => true,
     ) );
 }
 add_action( 'init', 'amidac_toolkit_register_post_types' );

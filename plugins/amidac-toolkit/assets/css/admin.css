@@ -1,0 +1,8 @@
+.amidac-rapports .search-box { float: right; margin: 6px 0 10px; }
+.amidac-rapports .search-box input[type="search"] { width: 220px; }
+.amidac-rapports .amidac-statut { display: inline-block; padding: 2px 10px; border-radius: 999px; background: #e3e8ef; color: #50575e; font-size: 12px; }
+.amidac-rapports .amidac-statut--on { background: #d7f0e0; color: #1e6b3a; }
+.amidac-rapports .amidac-manquant { color: #b32d2e; font-weight: 600; }
+.amidac-rapports .amidac-import { margin-top: 24px; padding: 20px 24px; background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #005a9c; max-width: 640px; }
+.amidac-rapports .amidac-import h2 { margin-top: 0; }
+.amidac-rapports .amidac-form .form-table th { width: 180px; }

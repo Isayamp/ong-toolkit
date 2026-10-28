@@ -402,14 +402,6 @@ function amidac_toolkit_extra_fields() {
                 'amidac_type_part' => array( __( 'Type (bailleur, ONG...)', $td ), 'text', '_amidac_type_partenaire' ),
             ),
         ),
-        'amidac_rapport' => array(
-            'title'  => __( 'Informations du rapport', $td ),
-            'fields' => array(
-                'amidac_annee'       => array( __( 'Année', $td ),                    'number', '_amidac_annee' ),
-                'amidac_type_rapp'   => array( __( 'Type (annuel, évaluation...)', $td ), 'text', '_amidac_type_rapport' ),
-                'amidac_fichier_url' => array( __( 'URL du fichier PDF (médiathèque)', $td ), 'url', '_amidac_fichier_url' ),
-            ),
-        ),
     );
 }
 
