@@ -12,7 +12,13 @@
 .amidac-projet__image { display: inline-block; max-width: 100%; width: auto; height: auto; max-height: 460px; object-fit: contain; border-radius: 10px; background: #f4f7fb; }
 .amidac-projet__infos h2 { margin: 0 0 10px; font-size: 1.1rem; }
 .amidac-projet__resume { margin: 0 0 16px; color: #444; }
-.amidac-projet__autres { max-width: 1100px; margin: 0 auto; padding: 0 20px 64px; }
+.amidac-projet__side { align-self: start; display: flex; flex-direction: column; gap: 24px; }
+.amidac-projet__autres { background: #fff; border: 1px solid #e3e8ef; border-radius: 10px; padding: 20px 24px; }
+.amidac-projet__autres h2 { margin: 0 0 12px; font-size: 1.1rem; }
+.amidac-autre { display: flex; align-items: center; gap: 12px; padding: 8px 0; text-decoration: none; color: inherit; border-top: 1px solid #eef1f5; }
+.amidac-autre:first-of-type { border-top: 0; }
+.amidac-autre img { width: 56px; height: 56px; object-fit: cover; border-radius: 6px; flex: none; }
+.amidac-autre span { font-weight: 600; line-height: 1.3; }
 
 .amidac-pill { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: .8rem; font-weight: 600; color: #fff; background: var(--amidac-primary); }
 .amidac-pill-vert { background: #2e9e5b; }

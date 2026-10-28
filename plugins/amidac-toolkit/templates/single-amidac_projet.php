@@ -85,6 +85,7 @@ while ( have_posts() ) :
                     <?php endif; ?>
                 </div>
 
+                <div class="amidac-projet__side">
                 <aside class="amidac-projet__infos">
                     <h2><?php esc_html_e( 'Résumé', 'amidac-toolkit' ); ?></h2>
                     <?php
@@ -108,42 +109,39 @@ while ( have_posts() ) :
                         </a>
                     <?php endif; ?>
                 </aside>
+
+                <?php
+                $autres = new WP_Query(
+                    array(
+                        'post_type'           => 'amidac_projet',
+                        'posts_per_page'      => 3,
+                        'post__not_in'        => array( $id ),
+                        'ignore_sticky_posts' => true,
+                        'no_found_rows'       => true,
+                    )
+                );
+                if ( $autres->have_posts() ) :
+                    ?>
+                    <section class="amidac-projet__autres">
+                        <h2><?php esc_html_e( 'Autres projets', 'amidac-toolkit' ); ?></h2>
+                        <?php while ( $autres->have_posts() ) : $autres->the_post(); ?>
+                            <a class="amidac-autre" href="<?php the_permalink(); ?>">
+                                <?php
+                                if ( has_post_thumbnail() ) {
+                                    the_post_thumbnail( 'thumbnail' );
+                                }
+                                ?>
+                                <span><?php the_title(); ?></span>
+                            </a>
+                        <?php endwhile; ?>
+                    </section>
+                    <?php
+                    wp_reset_postdata();
+                endif;
+                ?>
+                </div>
             </div>
         </div>
-
-        <?php
-        $autres = new WP_Query(
-            array(
-                'post_type'           => 'amidac_projet',
-                'posts_per_page'      => 3,
-                'post__not_in'        => array( $id ),
-                'ignore_sticky_posts' => true,
-                'no_found_rows'       => true,
-            )
-        );
-        if ( $autres->have_posts() ) :
-            ?>
-            <section class="amidac-projet__autres">
-                <h2><?php esc_html_e( 'Autres projets', 'amidac-toolkit' ); ?></h2>
-                <div class="amidac-grid">
-                    <?php while ( $autres->have_posts() ) : $autres->the_post(); ?>
-                        <a class="amidac-archive-card" href="<?php the_permalink(); ?>">
-                            <?php
-                            if ( has_post_thumbnail() ) {
-                                the_post_thumbnail( 'medium_large' );
-                            }
-                            ?>
-                            <div class="amidac-archive-card__body">
-                                <h3><?php the_title(); ?></h3>
-                            </div>
-                        </a>
-                    <?php endwhile; ?>
-                </div>
-            </section>
-            <?php
-            wp_reset_postdata();
-        endif;
-        ?>
     </article>
     <?php
 endwhile;
