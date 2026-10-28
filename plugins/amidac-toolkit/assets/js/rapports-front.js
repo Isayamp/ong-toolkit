@@ -30,6 +30,13 @@
                     groupe.hidden = !groupe.querySelector('li:not([hidden])');
                 });
 
+                // Un repli s'ouvre sur les résultats d'une recherche, et retrouve son état de départ sans recherche.
+                section.querySelectorAll('.amidac-repli').forEach(function (repli) {
+                    var trouve = !!repli.querySelector('li:not([hidden])');
+                    repli.hidden = !trouve;
+                    repli.open = terme ? trouve : repli.dataset.ouvert === '1';
+                });
+
                 var afficher = visibles > 0 && (!choix.categorie || section.dataset.categorie === choix.categorie);
                 section.hidden = !afficher;
                 if (afficher) {

@@ -216,6 +216,51 @@ function amidac_toolkit_documents_groupes( $docs ) {
 }
 
 /**
+ * Documents nombreux (comptes rendus, missions) : un repli par groupe, une ligne par document.
+ * Les groupes sont classés par année la plus récente ; seul le premier est ouvert.
+ */
+function amidac_toolkit_documents_replis( $docs ) {
+    $groupes = array();
+    foreach ( $docs as $doc ) {
+        $nom = get_post_meta( $doc->ID, '_amidac_groupe', true );
+        $groupes[ $nom ? $nom : __( 'Autres documents', 'amidac-toolkit' ) ][] = $doc;
+    }
+
+    $annee_max = function ( $liste ) {
+        return max( array_map( function ( $d ) {
+            return (int) get_post_meta( $d->ID, '_amidac_annee', true );
+        }, $liste ) );
+    };
+    uasort( $groupes, function ( $a, $b ) use ( $annee_max ) {
+        return $annee_max( $b ) <=> $annee_max( $a );
+    } );
+
+    $out    = '<div class="amidac-replis">';
+    $ouvert = true;
+    foreach ( $groupes as $nom => $liste ) {
+        // Les documents datés se lisent du plus récent au plus ancien.
+        if ( $annee_max( $liste ) && ! array_filter( $liste, function ( $d ) {
+            return ! get_post_meta( $d->ID, '_amidac_annee', true );
+        } ) ) {
+            $liste = array_reverse( $liste );
+        }
+
+        $out .= '<details class="amidac-repli" data-ouvert="' . ( $ouvert ? '1' : '0' ) . '"' . ( $ouvert ? ' open' : '' ) . '>';
+        $out .= '<summary><span class="amidac-repli__nom">' . esc_html( $nom ) . '</span><span class="amidac-repli__nb">' . count( $liste ) . '</span></summary><ul class="amidac-repli__liste">';
+        foreach ( $liste as $doc ) {
+            $out .= '<li' . amidac_toolkit_document_data( $doc ) . '>'
+                . '<span class="amidac-repli__titre">' . esc_html( get_the_title( $doc ) ) . '</span>'
+                . '<span class="amidac-doc__date">' . esc_html( get_post_meta( $doc->ID, '_amidac_periode', true ) ) . '</span>'
+                . amidac_toolkit_document_bouton( $doc->ID ) . '</li>';
+        }
+        $out   .= '</ul></details>';
+        $ouvert = false;
+    }
+
+    return $out . '</div>';
+}
+
+/**
  * [amidac_rapports categorie="annuel|publication|reseau|institutionnel" annee="2024" limit="50" titres="oui"]
  * Sans catégorie : toutes les sections, avec leur titre et la barre de recherche, dans l'ordre de la page Rapports & Publications.
  * filtres="oui|non" force ou masque la barre de recherche.
@@ -246,6 +291,8 @@ function amidac_toolkit_sc_rapports( $atts ) {
         }
         if ( 'institutionnel' === $key ) {
             $out .= amidac_toolkit_documents_groupes( $docs );
+        } elseif ( 'reseau' === $key ) {
+            $out .= amidac_toolkit_documents_replis( $docs );
         } else {
             $out .= '<div class="amidac-docs__grille">';
             foreach ( $docs as $doc ) {
