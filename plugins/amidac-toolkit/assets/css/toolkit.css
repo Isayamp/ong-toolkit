@@ -15,12 +15,15 @@
 .amidac-projet__side { align-self: start; display: flex; flex-direction: column; gap: 24px; }
 .amidac-projet__autres { background: #f4f7fb; border-radius: 10px; padding: 24px; }
 .amidac-projet__autres h2 { margin: 0 0 6px; font-size: 1.1rem; }
-.amidac-autre { display: flex; align-items: center; gap: 14px; padding: 12px 0; text-decoration: none; color: inherit; border-bottom: 1px solid #dde4ee; }
-.amidac-autre img { width: 72px; height: 72px; object-fit: cover; border-radius: 8px; flex: none; }
-.amidac-autre__texte { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.amidac-autre__secteur { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: #667; }
-.amidac-autre__titre { font-weight: 600; line-height: 1.3; }
-.amidac-autre:hover .amidac-autre__titre { color: var(--amidac-primary); }
+.amidac-projet__autres h2 { margin-bottom: 16px; }
+.amidac-projet__autres .amidac-carte { margin-bottom: 16px; }
+.amidac-carte { position: relative; display: flex; align-items: flex-end; aspect-ratio: 5 / 4; border-radius: 20px; overflow: hidden; background: #1b2064; color: #fff; text-decoration: none; }
+.amidac-carte__image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.amidac-carte::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(27, 32, 100, .95) 0%, rgba(27, 32, 100, .65) 40%, rgba(27, 32, 100, 0) 75%); }
+.amidac-carte:hover .amidac-carte__image { transform: scale(1.04); }
+.amidac-carte__texte { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 20px; }
+.amidac-carte__titre { font-size: 1.25rem; font-weight: 700; line-height: 1.25; color: #fff; }
+.amidac-carte .amidac-pill { text-transform: uppercase; letter-spacing: .05em; font-size: .75rem; padding: 6px 16px; }
 .amidac-projet__tous { display: inline-block; margin-top: 14px; font-weight: 700; text-decoration: none; color: var(--amidac-primary); }
 
 .amidac-pill { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: .8rem; font-weight: 600; color: #fff; background: var(--amidac-primary); }

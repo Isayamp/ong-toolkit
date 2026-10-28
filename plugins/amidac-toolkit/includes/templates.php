@@ -27,6 +27,30 @@ function amidac_toolkit_enqueue() {
 add_action( 'wp_enqueue_scripts', 'amidac_toolkit_enqueue' );
 
 /**
+ * Carte d'un projet : image en fond, dégradé, pastille du secteur et titre par-dessus.
+ */
+function amidac_toolkit_carte_projet( $post_id = null ) {
+    $post_id  = $post_id ? $post_id : get_the_ID();
+    $secteurs = get_the_terms( $post_id, 'secteur' );
+    $secteur  = ( $secteurs && ! is_wp_error( $secteurs ) ) ? $secteurs[0]->name : get_post_meta( $post_id, '_amidac_secteur_label', true );
+    $couleur  = get_post_meta( $post_id, '_amidac_tag_couleur', true );
+    $couleur  = $couleur ? $couleur : 'bleu';
+    ?>
+    <a class="amidac-carte" href="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
+        <?php if ( has_post_thumbnail( $post_id ) ) : ?>
+            <?php echo get_the_post_thumbnail( $post_id, 'medium_large', array( 'class' => 'amidac-carte__image' ) ); ?>
+        <?php endif; ?>
+        <span class="amidac-carte__texte">
+            <?php if ( $secteur ) : ?>
+                <span class="amidac-pill amidac-pill-<?php echo esc_attr( $couleur ); ?>"><?php echo esc_html( $secteur ); ?></span>
+            <?php endif; ?>
+            <span class="amidac-carte__titre"><?php echo esc_html( get_the_title( $post_id ) ); ?></span>
+        </span>
+    </a>
+    <?php
+}
+
+/**
  * Libellé lisible du statut d'un projet.
  */
 function amidac_toolkit_statut_label( $post_id ) {
