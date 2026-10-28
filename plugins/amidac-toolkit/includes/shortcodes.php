@@ -168,82 +168,61 @@ function amidac_toolkit_documents_filtres( $cats ) {
     return $out . '</div><p class="amidac-filtres__vide" hidden>' . esc_html__( 'Aucun document ne correspond à votre recherche.', $td ) . '</p>';
 }
 
-function amidac_toolkit_document_lien( $post_id ) {
-    return get_post_meta( $post_id, '_amidac_fichier_url', true );
-}
-
-/**
- * Icône Font Awesome (déjà chargée par le thème) de chaque section.
- */
-function amidac_toolkit_documents_icone( $categorie ) {
-    $icones = array(
-        'annuel'         => 'fa-file-alt',
-        'publication'    => 'fa-book-open',
-        'reseau'         => 'fa-handshake',
-        'institutionnel' => 'fa-landmark',
-    );
-    return '<i class="fas ' . esc_attr( isset( $icones[ $categorie ] ) ? $icones[ $categorie ] : 'fa-file' ) . '" aria-hidden="true"></i>';
-}
-
-/**
- * Carte d'un document, entièrement cliquable. Avec $entete : bandeau année et type (rapports annuels).
- */
-function amidac_toolkit_document_carte( $doc, $entete = true ) {
-    $td      = 'amidac-toolkit';
-    $annee   = get_post_meta( $doc->ID, '_amidac_annee', true );
-    $type    = get_post_meta( $doc->ID, '_amidac_type_rapport', true );
-    $periode = get_post_meta( $doc->ID, '_amidac_periode', true );
-    $fichier = amidac_toolkit_document_lien( $doc->ID );
-
-    $out = $fichier
-        ? '<a class="amidac-doc' . ( $entete ? '' : ' amidac-doc--simple' ) . '" href="' . esc_url( $fichier ) . '" target="_blank" rel="noopener"'
-        : '<div class="amidac-doc' . ( $entete ? '' : ' amidac-doc--simple' ) . '"';
-    $out .= amidac_toolkit_document_data( $doc ) . '>';
-
-    if ( $entete ) {
-        $out .= '<div class="amidac-doc__entete"><i class="fas fa-file-alt amidac-doc__icone" aria-hidden="true"></i>';
-        if ( $annee ) {
-            $out .= '<span class="amidac-doc__annee">' . esc_html( $annee ) . '</span>';
-        }
-        if ( $type ) {
-            $out .= '<span class="amidac-doc__type">' . esc_html( $type ) . '</span>';
-        }
-        $out .= '</div>';
+function amidac_toolkit_document_bouton( $post_id ) {
+    $file = get_post_meta( $post_id, '_amidac_fichier_url', true );
+    if ( ! $file ) {
+        return '<span class="amidac-doc__btn amidac-doc__btn--off">' . esc_html__( 'Bientôt disponible', 'amidac-toolkit' ) . '</span>';
     }
+    return '<a class="amidac-doc__btn" href="' . esc_url( $file ) . '" target="_blank" rel="noopener">'
+        . esc_html__( 'Télécharger', 'amidac-toolkit' ) . '</a>';
+}
 
-    $out .= '<div class="amidac-doc__corps"><h3 class="amidac-doc__titre">' . esc_html( get_the_title( $doc ) ) . '</h3>';
+/**
+ * Carte d'un document : année, titre, description, date et bouton.
+ */
+function amidac_toolkit_document_carte( $doc ) {
+    $annee   = get_post_meta( $doc->ID, '_amidac_annee', true );
+    $periode = get_post_meta( $doc->ID, '_amidac_periode', true );
+
+    $out = '<article class="amidac-doc"' . amidac_toolkit_document_data( $doc ) . '>';
+    if ( $annee ) {
+        $out .= '<span class="amidac-pill">' . esc_html( $annee ) . '</span>';
+    }
+    $out .= '<h3 class="amidac-doc__titre">' . esc_html( get_the_title( $doc ) ) . '</h3>';
     if ( $doc->post_excerpt ) {
         $out .= '<p class="amidac-doc__desc">' . esc_html( $doc->post_excerpt ) . '</p>';
     }
-    if ( $periode ) {
-        $out .= '<span class="amidac-doc__meta"><i class="far fa-calendar" aria-hidden="true"></i> ' . esc_html( $periode ) . '</span>';
-    }
-    $out .= $fichier
-        ? '<span class="amidac-doc__cta">' . esc_html__( 'Télécharger', $td ) . ' <i class="fas fa-arrow-right" aria-hidden="true"></i></span>'
-        : '<span class="amidac-doc__cta amidac-doc__cta--off">' . esc_html__( 'Bientôt disponible', $td ) . '</span>';
-    $out .= '</div>';
+    $out .= '<div class="amidac-doc__pied">';
+    $out .= '<span class="amidac-doc__date">' . esc_html( $periode ) . '</span>';
+    $out .= amidac_toolkit_document_bouton( $doc->ID );
+    $out .= '</div></article>';
 
-    return $out . ( $fichier ? '</a>' : '</div>' );
+    return $out;
 }
 
 /**
- * Ligne d'un document dans un repli : icône, titre, date et lien de téléchargement.
+ * Documents institutionnels : un panneau par groupe, une ligne par document.
  */
-function amidac_toolkit_document_ligne( $doc ) {
-    $td      = 'amidac-toolkit';
-    $fichier = amidac_toolkit_document_lien( $doc->ID );
-    $periode = get_post_meta( $doc->ID, '_amidac_periode', true );
+function amidac_toolkit_documents_groupes( $docs ) {
+    $groupes = array();
+    foreach ( $docs as $doc ) {
+        $nom = get_post_meta( $doc->ID, '_amidac_groupe', true );
+        $groupes[ $nom ? $nom : __( 'Documents', 'amidac-toolkit' ) ][] = $doc;
+    }
 
-    $contenu = '<i class="far fa-file-pdf amidac-ligne__icone" aria-hidden="true"></i>'
-        . '<span class="amidac-ligne__titre">' . esc_html( get_the_title( $doc ) ) . '</span>'
-        . ( $periode ? '<span class="amidac-ligne__date">' . esc_html( $periode ) . '</span>' : '' )
-        . ( $fichier
-            ? '<span class="amidac-ligne__cta">' . esc_html__( 'Télécharger', $td ) . '</span>'
-            : '<span class="amidac-ligne__cta amidac-ligne__cta--off">' . esc_html__( 'Bientôt disponible', $td ) . '</span>' );
-
-    return '<li' . amidac_toolkit_document_data( $doc ) . '>' . ( $fichier
-        ? '<a class="amidac-ligne" href="' . esc_url( $fichier ) . '" target="_blank" rel="noopener">' . $contenu . '</a>'
-        : '<span class="amidac-ligne">' . $contenu . '</span>' ) . '</li>';
+    $out = '<div class="amidac-docs__groupes">';
+    foreach ( $groupes as $nom => $liste ) {
+        $out .= '<div class="amidac-docs__groupe"><h3>' . esc_html( $nom ) . '</h3><ul>';
+        foreach ( $liste as $doc ) {
+            $file  = get_post_meta( $doc->ID, '_amidac_fichier_url', true );
+            $titre = esc_html( get_the_title( $doc ) );
+            $out  .= '<li' . amidac_toolkit_document_data( $doc ) . '>' . ( $file
+                ? '<a href="' . esc_url( $file ) . '" target="_blank" rel="noopener">' . $titre . '</a>'
+                : '<span class="amidac-docs__off">' . $titre . ' <small>' . esc_html__( 'Bientôt disponible', 'amidac-toolkit' ) . '</small></span>' ) . '</li>';
+        }
+        $out .= '</ul></div>';
+    }
+    return $out . '</div>';
 }
 
 /**
@@ -278,7 +257,10 @@ function amidac_toolkit_documents_replis( $docs ) {
         $out .= '<details class="amidac-repli" data-ouvert="0">';
         $out .= '<summary><span class="amidac-repli__nom">' . esc_html( $nom ) . '</span><span class="amidac-repli__nb">' . count( $liste ) . '</span></summary><ul class="amidac-repli__liste">';
         foreach ( $liste as $doc ) {
-            $out .= amidac_toolkit_document_ligne( $doc );
+            $out .= '<li' . amidac_toolkit_document_data( $doc ) . '>'
+                . '<span class="amidac-repli__titre">' . esc_html( get_the_title( $doc ) ) . '</span>'
+                . '<span class="amidac-doc__date">' . esc_html( get_post_meta( $doc->ID, '_amidac_periode', true ) ) . '</span>'
+                . amidac_toolkit_document_bouton( $doc->ID ) . '</li>';
         }
         $out .= '</ul></details>';
     }
@@ -313,27 +295,24 @@ function amidac_toolkit_sc_rapports( $atts ) {
 
         $out .= '<section class="amidac-docs amidac-docs--' . esc_attr( $key ) . '" data-categorie="' . esc_attr( $key ) . '">';
         if ( $titres ) {
-            $out .= '<h2 class="amidac-docs__titre">' . amidac_toolkit_documents_icone( $key ) . ' ' . esc_html( $label ) . '</h2>';
+            $out .= '<h2 class="amidac-docs__titre">' . esc_html( $label ) . '</h2>';
         }
-        if ( in_array( $key, array( 'reseau', 'institutionnel' ), true ) ) {
+        if ( 'institutionnel' === $key ) {
+            $out .= amidac_toolkit_documents_groupes( $docs );
+        } elseif ( 'reseau' === $key ) {
             $out .= amidac_toolkit_documents_replis( $docs );
         } else {
             $out .= '<div class="amidac-docs__grille">';
             foreach ( $docs as $doc ) {
-                $out .= amidac_toolkit_document_carte( $doc, 'annuel' === $key );
+                $out .= amidac_toolkit_document_carte( $doc );
             }
             $out .= '</div>';
         }
         $out .= '</section>';
     }
 
-    if ( ! $out ) {
-        return '';
-    }
-
-    // L'enveloppe porte les styles du bloc (isolés des règles globales de la page).
-    if ( ! $filtres ) {
-        return '<div class="amidac-rapports-bloc">' . $out . '</div>';
+    if ( ! $filtres || ! $out ) {
+        return $out;
     }
 
     $js = AMIDAC_TOOLKIT_DIR . 'assets/js/rapports-front.js';

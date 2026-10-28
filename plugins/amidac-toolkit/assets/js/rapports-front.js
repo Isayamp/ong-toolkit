@@ -25,6 +25,11 @@
                     }
                 });
 
+                // Un groupe institutionnel sans document visible disparait aussi.
+                section.querySelectorAll('.amidac-docs__groupe').forEach(function (groupe) {
+                    groupe.hidden = !groupe.querySelector('li:not([hidden])');
+                });
+
                 // Un repli s'ouvre sur les résultats d'une recherche, et retrouve son état de départ sans recherche.
                 section.querySelectorAll('.amidac-repli').forEach(function (repli) {
                     var trouve = !!repli.querySelector('li:not([hidden])');

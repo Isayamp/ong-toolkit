@@ -1,0 +1,522 @@
+<!-- =======================================================================
+     PAGE « RAPPORTS & PUBLICATIONS » : contenu principal + panneau YouTube
+     À coller dans le widget HTML d'Elementor de la page.
+     Les cartes, filtres, recherche et accordéons viennent du plugin AMIDAC Toolkit
+     via [amidac_rapports] ; cette page ne fait que lui donner ses couleurs.
+     ======================================================================= -->
+
+<style>
+    /* -----------------------------------------------------------------------
+       1. VARIABLES (couleurs de la page)
+       ----------------------------------------------------------------------- */
+    :root {
+        --bleu: #1A237E;
+        --vert: #2E7D32;
+        --vert-light: #43a047;
+        --vert-pale: #a5d6a7;
+        --blanc: #ffffff;
+        --gris-bg: #f5f7fa;
+        --gris-light: #f8f7f4;
+        --gris-text: #555e6d;
+        --gris-border: #e0e0e0;
+    }
+
+    /* -----------------------------------------------------------------------
+       2. BASE
+       La remise à zéro passe par :where() : sa priorité est nulle, donc les styles du
+       plugin (marges des cartes, des titres, des accordéons) ne sont plus écrasés.
+       ----------------------------------------------------------------------- */
+    :where(.amidac-page-wrapper) * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .amidac-page-wrapper {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: var(--gris-text);
+        line-height: 1.6;
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 2rem;
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+
+    .amidac-main-content {
+        min-width: 0;
+        min-height: 100vh;
+    }
+
+    /* -----------------------------------------------------------------------
+       3. INTRO
+       ----------------------------------------------------------------------- */
+    .amidac-rapports-intro {
+        background: var(--gris-bg);
+        padding: 2rem;
+        border-radius: 8px;
+        margin-bottom: 2.5rem;
+    }
+
+    .intro-text {
+        font-size: 1rem;
+        color: var(--gris-text);
+        line-height: 1.8;
+    }
+
+    .intro-highlight {
+        color: var(--vert);
+        font-weight: 600;
+    }
+
+    /* -----------------------------------------------------------------------
+       4. RAPPORTS (shortcode du plugin) : couleurs et titres de la page
+       ----------------------------------------------------------------------- */
+    .amidac-dynamic-reports {
+        --amidac-primary: var(--vert);
+        --amidac-secondary: var(--bleu);
+        --amidac-dark: var(--bleu);
+    }
+
+    .amidac-dynamic-reports .amidac-filtres {
+        --filtre-actif: var(--vert);
+    }
+
+    .amidac-dynamic-reports .amidac-docs__titre {
+        margin: 3rem 0 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--gris-border);
+        font-size: 1.8rem;
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--bleu);
+    }
+
+    .amidac-dynamic-reports .amidac-docs:first-of-type .amidac-docs__titre {
+        margin-top: 0;
+    }
+
+    /* -----------------------------------------------------------------------
+       5. SECTION CTA
+       ----------------------------------------------------------------------- */
+    .amidac-cta-section {
+        background: var(--gris-light);
+        border-radius: 8px;
+        padding: 3rem 2rem;
+        margin-top: 4rem;
+        text-align: center;
+    }
+
+    .cta-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .cta-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--bleu);
+        margin-bottom: 1rem;
+    }
+
+    .cta-text {
+        font-size: 1rem;
+        color: var(--gris-text);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .cta-btn {
+        padding: 0.85rem 2rem;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .cta-btn-primary {
+        background: var(--vert);
+        color: var(--blanc);
+    }
+
+    .cta-btn-primary:hover {
+        background: var(--vert-light);
+        transform: translateY(-2px);
+    }
+
+    .cta-btn-secondary {
+        background: transparent;
+        color: var(--vert);
+        border: 2px solid var(--vert);
+    }
+
+    .cta-btn-secondary:hover {
+        background: var(--vert-pale);
+    }
+
+    /* -----------------------------------------------------------------------
+       6. PANNEAU YOUTUBE (reste visible au défilement)
+       ----------------------------------------------------------------------- */
+    .amidac-sidebar-youtube {
+        position: sticky;
+        top: 100px;
+        height: fit-content;
+        background: var(--blanc);
+        border: 1px solid var(--gris-border);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .yt-channel-header {
+        background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
+        padding: 1.5rem;
+        text-align: center;
+        color: var(--blanc);
+    }
+
+    .yt-channel-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .yt-channel-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .yt-channel-link {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.3);
+        color: var(--blanc);
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .yt-channel-link:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .yt-videos-container {
+        padding: 1rem;
+    }
+
+    .yt-video-item {
+        margin-bottom: 1rem;
+    }
+
+    .yt-video-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .yt-video-link {
+        position: relative;
+        display: block;
+        text-decoration: none;
+        background: var(--gris-light);
+        border-radius: 4px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+    }
+
+    .yt-video-link:hover {
+        opacity: 0.8;
+    }
+
+    .yt-video-thumbnail {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        font-size: 2rem;
+        color: #fff;
+    }
+
+    .yt-video-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .yt-play-button {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: #FF0000;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--blanc);
+        font-size: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .yt-video-title {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--gris-text);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* -----------------------------------------------------------------------
+       7. LECTEUR VIDÉO (lightbox, au-dessus des menus et popups Elementor)
+       ----------------------------------------------------------------------- */
+    .video-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 99999;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .video-modal.active {
+        display: flex;
+    }
+
+    .video-modal-content {
+        width: 90%;
+        max-width: 900px;
+        aspect-ratio: 16 / 9;
+        background: #000;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .video-modal-content iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .video-modal-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: #FF0000;
+        color: var(--blanc);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 100000;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .video-modal-close:hover {
+        background: #CC0000;
+        transform: scale(1.1);
+    }
+
+    /* -----------------------------------------------------------------------
+       8. RESPONSIVE
+       ----------------------------------------------------------------------- */
+    @media (max-width: 1024px) {
+        .amidac-page-wrapper {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .amidac-sidebar-youtube {
+            position: static;
+            order: 99;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .amidac-dynamic-reports .amidac-docs__titre {
+            font-size: 1.4rem;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+        }
+
+        .cta-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .amidac-dynamic-reports .amidac-docs__titre {
+            font-size: 1.2rem;
+        }
+
+        .yt-channel-name {
+            font-size: 1rem;
+        }
+
+        .amidac-cta-section {
+            padding: 2rem 1rem;
+        }
+    }
+</style>
+
+<div class="amidac-page-wrapper">
+
+    <!-- COLONNE PRINCIPALE -->
+    <main class="amidac-main-content">
+
+        <section class="amidac-rapports-intro">
+            <p class="intro-text">
+                <span class="intro-highlight">AMIDAC publie régulièrement ses rapports d'activité</span> pour rendre compte
+                de ses actions aux partenaires, donateurs et communautés. Chaque année, nous documentons nos accomplissements,
+                défis et perspectives dans le domaine de la paix, la protection des droits, et le développement communautaire.
+            </p>
+        </section>
+
+        <!-- Rapports annuels, publications, réseaux et documents institutionnels :
+             gérés dans l'admin (menu Rapports), affichés par le plugin. -->
+        <section class="amidac-dynamic-reports">
+            [amidac_rapports]
+        </section>
+
+        <section class="amidac-cta-section">
+            <div class="cta-content">
+                <h2 class="cta-title">Besoin d'informations complémentaires ?</h2>
+                <p class="cta-text">Nous sommes à votre disposition pour répondre à vos questions sur nos actions, nos rapports ou nos domaines d'intervention.</p>
+                <div class="cta-buttons">
+                    <a href="/contact" class="cta-btn cta-btn-primary">
+                        <i class="fas fa-envelope"></i> Nous Contacter
+                    </a>
+                    <a href="/nos-projets" class="cta-btn cta-btn-secondary">
+                        <i class="fas fa-project-diagram"></i> Voir nos Projets
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- COLONNE LATÉRALE : YOUTUBE -->
+    <aside class="amidac-sidebar-youtube">
+        <div class="yt-channel-header">
+            <div class="yt-channel-icon">
+                <i class="fab fa-youtube"></i>
+            </div>
+            <div class="yt-channel-name">AMIDAC ASBL</div>
+            <a href="https://www.youtube.com/@AMIDACASBL" target="_blank" rel="noopener" class="yt-channel-link">Voir la chaîne</a>
+        </div>
+
+        <div class="yt-videos-container">
+            <div class="yt-video-item">
+                <a href="javascript:void(0)" onclick="openAmidacVideoModal('TQOzzAXnZ50')" class="yt-video-link">
+                    <div class="yt-video-thumbnail">
+                        <img src="https://img.youtube.com/vi/TQOzzAXnZ50/hqdefault.jpg" alt="Miniature vidéo YouTube">
+                        <div class="yt-play-button">▶</div>
+                    </div>
+                    <div class="yt-video-title">Vidéo récente</div>
+                </a>
+            </div>
+
+            <div class="yt-video-item">
+                <a href="javascript:void(0)" onclick="openAmidacVideoModal('c906fgrNWpQ')" class="yt-video-link">
+                    <div class="yt-video-thumbnail">
+                        <img src="https://img.youtube.com/vi/c906fgrNWpQ/hqdefault.jpg" alt="Miniature vidéo YouTube">
+                        <div class="yt-play-button">▶</div>
+                    </div>
+                    <div class="yt-video-title">Vidéo récente</div>
+                </a>
+            </div>
+
+            <div class="yt-video-item">
+                <a href="javascript:void(0)" onclick="openAmidacVideoModal('Tf1ZfY3AXVs')" class="yt-video-link">
+                    <div class="yt-video-thumbnail">
+                        <img src="https://img.youtube.com/vi/Tf1ZfY3AXVs/hqdefault.jpg" alt="Miniature vidéo YouTube">
+                        <div class="yt-play-button">▶</div>
+                    </div>
+                    <div class="yt-video-title">Vidéo récente</div>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+</div>
+
+<!-- LECTEUR VIDÉO -->
+<div id="amidacVideoModal" class="video-modal">
+    <div class="video-modal-content">
+        <button class="video-modal-close" onclick="closeAmidacVideoModal()" aria-label="Fermer la vidéo">&times;</button>
+        <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Lecteur vidéo YouTube"></iframe>
+    </div>
+</div>
+
+<script>
+    /** Ouvre le lecteur et charge la vidéo YouTube demandée. */
+    function openAmidacVideoModal(videoId) {
+        const modal = document.getElementById('amidacVideoModal');
+        modal.querySelector('iframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    /** Ferme le lecteur et coupe la vidéo. */
+    function closeAmidacVideoModal() {
+        const modal = document.getElementById('amidacVideoModal');
+        modal.querySelector('iframe').src = '';
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('amidacVideoModal');
+
+        // Clic sur le fond noir : fermeture
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                closeAmidacVideoModal();
+            }
+        });
+
+        // Touche Échap : fermeture
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeAmidacVideoModal();
+            }
+        });
+    });
+</script>

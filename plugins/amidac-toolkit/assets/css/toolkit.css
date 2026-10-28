@@ -64,79 +64,48 @@
 .amidac-partners img { max-width: 100%; height: 70px; object-fit: contain; filter: grayscale(1); transition: filter .2s; }
 .amidac-partners img:hover { filter: none; }
 
-
-/* Rapports et documents : reprend les couleurs de la page (--bleu, --vert...) avec des valeurs de secours.
-   Tout est préfixé par .amidac-rapports-bloc pour passer devant les remises à zéro globales de la page. */
-.amidac-rapports-bloc { --ad-bleu: var(--bleu, #1A237E); --ad-vert: var(--vert, #2E7D32); --ad-vert-clair: var(--vert-light, #43a047); --ad-vert-pale: var(--vert-pale, #a5d6a7); --ad-fond: var(--gris-bg, #f5f7fa); --ad-fond-clair: var(--gris-light, #f8f7f4); --ad-texte: var(--gris-text, #555e6d); --ad-bord: var(--gris-border, #e0e0e0); }
+/* Rapports et documents */
+.amidac-docs { margin: 0 0 48px; }
 .amidac-rapports-bloc [hidden] { display: none !important; }
-.amidac-rapports-bloc .amidac-docs { margin: 0; }
-
-/* Recherche et filtres */
-.amidac-rapports-bloc .amidac-filtres { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 2rem; padding: 20px 24px; background: #fff; border: 1px solid var(--ad-bord); border-radius: 8px; box-shadow: 0 1px 6px rgba(0, 0, 0, .06); }
-.amidac-rapports-bloc .amidac-filtres__groupe { display: flex; flex-wrap: wrap; gap: 10px; }
-.amidac-rapports-bloc .amidac-filtres__groupe button { margin: 0; padding: 9px 18px; border: 1px solid var(--ad-bord); border-radius: 999px; background: #fff; color: var(--ad-texte); font: inherit; font-size: .95rem; font-weight: 500; line-height: 1.3; letter-spacing: normal; text-transform: none; cursor: pointer; transition: all .2s ease; }
-.amidac-rapports-bloc .amidac-filtres__groupe button:hover { border-color: var(--ad-vert); color: var(--ad-vert); background: #fff; }
-.amidac-rapports-bloc .amidac-filtres__groupe button[aria-pressed="true"] { border-color: var(--ad-vert); background: var(--ad-vert); color: #fff; }
-.amidac-rapports-bloc .amidac-filtres__champ { display: flex; align-items: center; gap: 10px; flex: 1 1 220px; max-width: 320px; min-width: 0; margin: 0 0 0 auto; padding: 0 18px; border: 1px solid var(--ad-bord); border-radius: 999px; background: #fff; color: var(--ad-texte); }
-.amidac-rapports-bloc .amidac-filtres__recherche { flex: 1; min-width: 0; margin: 0; padding: 11px 0; border: 0; background: transparent; font: inherit; font-size: .95rem; box-shadow: none; }
-.amidac-rapports-bloc .amidac-filtres__recherche:focus { outline: none; box-shadow: none; }
-.amidac-rapports-bloc .amidac-filtres__champ:focus-within, .amidac-rapports-bloc .amidac-filtres__groupe button:focus-visible { outline: 2px solid var(--ad-vert); outline-offset: 2px; }
-.amidac-rapports-bloc .amidac-filtres__vide { padding: 1.5rem 0; color: #999; }
-
-/* Titres de section, comme .section-title de la page */
-.amidac-rapports-bloc .amidac-docs__titre { display: flex; align-items: center; gap: .75rem; margin: 3rem 0 1.5rem; padding: 0 0 1rem; border-bottom: 2px solid var(--ad-bord); font-size: 1.8rem; font-weight: 700; line-height: 1.3; color: var(--ad-bleu); }
-.amidac-rapports-bloc .amidac-docs__titre i { color: var(--ad-vert); }
-.amidac-rapports-bloc .amidac-docs:first-of-type .amidac-docs__titre { margin-top: 0; }
-
-/* Cartes : rapports annuels (avec bandeau) et publications */
-.amidac-rapports-bloc .amidac-docs__grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-.amidac-rapports-bloc .amidac-doc { display: flex; flex-direction: column; margin: 0; padding: 0; background: #fff; border: 1px solid var(--ad-bord); border-radius: 8px; overflow: hidden; color: inherit; text-decoration: none; transition: all .3s ease; }
-.amidac-rapports-bloc a.amidac-doc { cursor: pointer; }
-.amidac-rapports-bloc a.amidac-doc:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0, 0, 0, .12); border-color: var(--ad-vert-pale); }
-.amidac-rapports-bloc .amidac-doc__entete { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 140px; padding: 2rem; text-align: center; background: linear-gradient(135deg, rgba(46, 125, 50, .05) 0%, rgba(165, 214, 167, .1) 100%); }
-.amidac-rapports-bloc .amidac-doc__icone { margin-bottom: .5rem; font-size: 2.5rem; color: var(--ad-vert); }
-.amidac-rapports-bloc .amidac-doc__annee { font-size: 1.8rem; font-weight: 700; line-height: 1; color: var(--ad-bleu); }
-.amidac-rapports-bloc .amidac-doc__type { margin-top: .5rem; font-size: .8rem; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--ad-vert); }
-.amidac-rapports-bloc .amidac-doc__corps { display: flex; flex: 1; flex-direction: column; padding: 1.5rem; }
-.amidac-rapports-bloc .amidac-doc--simple .amidac-doc__corps { align-items: stretch; }
-.amidac-rapports-bloc .amidac-doc__titre { margin: 0 0 .5rem; font-size: 1.1rem; font-weight: 600; line-height: 1.3; color: var(--ad-bleu); }
-.amidac-rapports-bloc .amidac-doc__desc { margin: 0 0 1rem; font-size: .95rem; line-height: 1.6; color: var(--ad-texte); }
-.amidac-rapports-bloc .amidac-doc__meta { font-size: .85rem; color: #999; }
-.amidac-rapports-bloc .amidac-doc__cta { display: flex; align-items: center; gap: .5rem; margin-top: auto; padding-top: 1rem; font-size: .9rem; font-weight: 600; color: var(--ad-vert); }
-.amidac-rapports-bloc .amidac-doc--simple .amidac-doc__cta { justify-content: center; }
-.amidac-rapports-bloc .amidac-doc__cta i { transition: transform .2s ease; }
-.amidac-rapports-bloc a.amidac-doc:hover .amidac-doc__cta i { transform: translateX(3px); }
-.amidac-rapports-bloc .amidac-doc__cta--off { color: #999; }
-
-/* Accordéon : réseaux et documents institutionnels, comme .accordion-* de la page */
-.amidac-rapports-bloc .amidac-replis { background: #fff; border: 1px solid var(--ad-bord); border-radius: 8px; overflow: hidden; }
-.amidac-rapports-bloc .amidac-repli { margin: 0; border-bottom: 1px solid var(--ad-bord); }
-.amidac-rapports-bloc .amidac-repli:last-child { border-bottom: 0; }
-.amidac-rapports-bloc .amidac-repli summary { display: flex; align-items: center; gap: 1rem; margin: 0; padding: 1.25rem 1.5rem; background: var(--ad-fond-clair); color: var(--ad-bleu); font-weight: 600; cursor: pointer; list-style: none; transition: background .2s ease; }
-.amidac-rapports-bloc .amidac-repli summary::-webkit-details-marker { display: none; }
-.amidac-rapports-bloc .amidac-repli summary:hover { background: #efeef9; }
-.amidac-rapports-bloc .amidac-repli[open] summary { background: var(--ad-vert-pale); color: var(--ad-vert); }
-.amidac-rapports-bloc .amidac-repli summary::after { content: ""; flex: none; width: 8px; height: 8px; margin: -4px 4px 0 0; border-right: 2px solid var(--ad-vert); border-bottom: 2px solid var(--ad-vert); transform: rotate(45deg); transition: transform .3s ease; }
-.amidac-rapports-bloc .amidac-repli[open] summary::after { margin-top: 4px; transform: rotate(-135deg); }
-.amidac-rapports-bloc .amidac-repli summary:focus-visible { outline: 2px solid var(--ad-vert); outline-offset: -2px; }
-.amidac-rapports-bloc .amidac-repli__nb { margin-left: auto; padding: 2px 10px; border-radius: 999px; background: #fff; color: var(--ad-texte); font-size: .85rem; font-weight: 600; }
-.amidac-rapports-bloc .amidac-repli__liste { display: flex; flex-direction: column; gap: .75rem; margin: 0; padding: 1.5rem; background: #fff; list-style: none; }
-.amidac-rapports-bloc .amidac-repli__liste li { margin: 0; padding: 0; }
-.amidac-rapports-bloc .amidac-ligne { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--ad-fond); border-radius: 6px; text-decoration: none; transition: all .2s ease; }
-.amidac-rapports-bloc a.amidac-ligne:hover { background: var(--ad-vert-pale); }
-.amidac-rapports-bloc .amidac-ligne__icone { font-size: 1.5rem; color: var(--ad-vert); }
-.amidac-rapports-bloc .amidac-ligne__titre { flex: 1; min-width: 0; font-size: .95rem; font-weight: 600; color: var(--ad-bleu); }
-.amidac-rapports-bloc .amidac-ligne__date { font-size: .85rem; color: #999; white-space: nowrap; }
-.amidac-rapports-bloc .amidac-ligne__cta { font-size: .85rem; font-weight: 600; color: var(--ad-vert); white-space: nowrap; }
-.amidac-rapports-bloc .amidac-ligne__cta--off { color: #999; }
-
-@media (max-width: 768px) {
-    .amidac-rapports-bloc .amidac-docs__titre { font-size: 1.4rem; }
-    .amidac-rapports-bloc .amidac-docs__grille { grid-template-columns: 1fr; }
-    .amidac-rapports-bloc .amidac-filtres__champ { flex-basis: 100%; margin-left: 0; }
-    .amidac-rapports-bloc .amidac-ligne { flex-wrap: wrap; gap: .5rem 1rem; }
-    .amidac-rapports-bloc .amidac-ligne__titre { flex-basis: calc(100% - 3rem); }
-}
+.amidac-filtres { --filtre-actif: #1e7a3c; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 32px; padding: 20px 24px; background: #fff; border-radius: 6px; box-shadow: 0 1px 6px rgba(0, 0, 0, .1); }
+.amidac-filtres__groupe { display: flex; flex-wrap: wrap; gap: 10px; }
+.amidac-filtres__groupe button { padding: 9px 18px; border: 1px solid #e1e5ea; border-radius: 999px; background: #fff; color: #444; font: inherit; font-size: .95rem; font-weight: 500; line-height: 1.3; letter-spacing: normal; text-transform: none; cursor: pointer; }
+.amidac-filtres__groupe button:hover { border-color: var(--filtre-actif); }
+.amidac-filtres__groupe button[aria-pressed="true"] { border-color: var(--filtre-actif); background: var(--filtre-actif); color: #fff; }
+.amidac-filtres__champ { display: flex; align-items: center; gap: 10px; flex: 1 1 220px; max-width: 320px; min-width: 0; margin-left: auto; padding: 0 18px; border: 1px solid #e1e5ea; border-radius: 999px; background: #fff; color: #333; }
+.amidac-filtres__recherche { flex: 1; min-width: 0; padding: 11px 0; border: 0; background: transparent; font: inherit; font-size: .95rem; box-shadow: none; }
+.amidac-filtres__recherche:focus { outline: none; box-shadow: none; }
+.amidac-filtres__champ:focus-within, .amidac-filtres__groupe button:focus-visible { outline: 2px solid var(--filtre-actif); outline-offset: 2px; }
+.amidac-filtres__vide { padding: 24px 0; color: #6b7280; }
+.amidac-docs__titre { margin: 0 0 20px; font-size: 1.5rem; color: var(--amidac-dark); }
+.amidac-docs__grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.amidac-doc { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 20px; background: #fff; border: 1px solid #d5dbe5; border-radius: 6px; }
+.amidac-doc__titre { margin: 0; font-size: 1.1rem; line-height: 1.3; }
+.amidac-doc__desc { margin: 0; color: #555; font-size: .95rem; }
+.amidac-doc__pied { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; margin-top: auto; padding-top: 10px; }
+.amidac-doc__date { font-size: .85rem; color: #777; }
+.amidac-doc__btn { margin-left: auto; padding: 8px 14px; border-radius: 4px; background: var(--amidac-primary); color: #fff; font-size: .9rem; font-weight: 600; text-decoration: none; }
+.amidac-doc__btn:hover { color: #fff; opacity: .9; }
+.amidac-doc__btn--off { background: #e3e8ef; color: #6b7280; }
+.amidac-docs__groupes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.amidac-docs__groupe { padding: 20px; background: #f4f7fb; border-radius: 6px; }
+.amidac-docs__groupe h3 { margin: 0 0 12px; font-size: 1.05rem; }
+.amidac-docs__groupe ul { margin: 0; padding: 0; list-style: none; }
+.amidac-docs__groupe li { padding: 9px 0; border-top: 1px solid #dde3ec; }
+.amidac-docs__groupe a { color: var(--amidac-primary); font-weight: 600; text-decoration: none; }
+.amidac-docs__off { color: #6b7280; }
+.amidac-replis { display: grid; gap: 10px; }
+.amidac-repli { background: #fff; border: 1px solid #d5dbe5; border-radius: 6px; }
+.amidac-repli summary { display: flex; align-items: center; gap: 12px; padding: 14px 18px; font-weight: 600; cursor: pointer; list-style: none; }
+.amidac-repli summary::-webkit-details-marker { display: none; }
+.amidac-repli summary::before { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform .15s; }
+.amidac-repli[open] summary::before { transform: rotate(45deg); }
+.amidac-repli__nb { margin-left: auto; padding: 2px 10px; border-radius: 999px; background: #f4f7fb; color: #555; font-size: .85rem; font-weight: 600; }
+.amidac-repli summary:focus-visible { outline: 2px solid var(--amidac-secondary); outline-offset: -2px; }
+.amidac-repli__liste { margin: 0; padding: 0 18px 6px; list-style: none; }
+.amidac-repli__liste li { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-top: 1px solid #e6ebf2; }
+.amidac-repli__titre { flex: 1; min-width: 0; }
+@media (max-width: 600px) { .amidac-repli__liste li { flex-wrap: wrap; } .amidac-repli__titre { flex-basis: 100%; } }
 
 @media (max-width: 800px) {
     .amidac-projet__layout { grid-template-columns: 1fr; }
