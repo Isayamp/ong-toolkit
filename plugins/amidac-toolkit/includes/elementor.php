@@ -21,7 +21,8 @@ add_action( 'elementor/loaded', function () {
     } );
 
     $enqueue = function () {
-        wp_enqueue_style( 'amidac-widgets', AMIDAC_TOOLKIT_URI . 'assets/css/widgets.css', array(), AMIDAC_TOOLKIT_VERSION );
+        $css = AMIDAC_TOOLKIT_DIR . 'assets/css/widgets.css';
+        wp_enqueue_style( 'amidac-widgets', AMIDAC_TOOLKIT_URI . 'assets/css/widgets.css', array(), AMIDAC_TOOLKIT_VERSION . '.' . filemtime( $css ) );
     };
     add_action( 'elementor/frontend/after_enqueue_styles', $enqueue );
     add_action( 'elementor/editor/after_enqueue_styles', $enqueue );

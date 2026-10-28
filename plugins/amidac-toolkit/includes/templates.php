@@ -22,7 +22,8 @@ function amidac_toolkit_template( $template ) {
 add_filter( 'template_include', 'amidac_toolkit_template' );
 
 function amidac_toolkit_enqueue() {
-    wp_enqueue_style( 'amidac-toolkit', AMIDAC_TOOLKIT_URI . 'assets/css/toolkit.css', array(), AMIDAC_TOOLKIT_VERSION );
+    $css = AMIDAC_TOOLKIT_DIR . 'assets/css/toolkit.css';
+    wp_enqueue_style( 'amidac-toolkit', AMIDAC_TOOLKIT_URI . 'assets/css/toolkit.css', array(), AMIDAC_TOOLKIT_VERSION . '.' . filemtime( $css ) );
 }
 add_action( 'wp_enqueue_scripts', 'amidac_toolkit_enqueue' );
 
@@ -34,7 +35,10 @@ function amidac_toolkit_carte_projet( $post_id = null ) {
     $secteurs = get_the_terms( $post_id, 'secteur' );
     $secteur  = ( $secteurs && ! is_wp_error( $secteurs ) ) ? $secteurs[0]->name : get_post_meta( $post_id, '_amidac_secteur_label', true );
     $couleur  = get_post_meta( $post_id, '_amidac_tag_couleur', true );
-    $couleur  = $couleur ? $couleur : 'bleu';
+    if ( ! $couleur ) {
+        // Couleur par défaut selon le secteur : vert pour l'environnement.
+        $couleur = ( $secteurs && ! is_wp_error( $secteurs ) && 'environnement' === $secteurs[0]->slug ) ? 'vert' : 'bleu';
+    }
     ?>
     <a class="amidac-carte" href="<?php echo esc_url( get_permalink( $post_id ) ); ?>">
         <?php if ( has_post_thumbnail( $post_id ) ) : ?>
