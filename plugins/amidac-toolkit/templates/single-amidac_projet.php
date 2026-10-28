@@ -125,22 +125,7 @@ while ( have_posts() ) :
                     <section class="amidac-projet__autres">
                         <h2><?php esc_html_e( 'Autres projets', 'amidac-toolkit' ); ?></h2>
                         <?php while ( $autres->have_posts() ) : $autres->the_post(); ?>
-                            <a class="amidac-autre" href="<?php the_permalink(); ?>">
-                                <?php
-                                if ( has_post_thumbnail() ) {
-                                    the_post_thumbnail( 'thumbnail' );
-                                }
-                                ?>
-                                <span class="amidac-autre__texte">
-                                    <?php
-                                    $s_autre = get_the_terms( get_the_ID(), 'secteur' );
-                                    if ( $s_autre && ! is_wp_error( $s_autre ) ) :
-                                        ?>
-                                        <span class="amidac-autre__secteur"><?php echo esc_html( $s_autre[0]->name ); ?></span>
-                                    <?php endif; ?>
-                                    <span class="amidac-autre__titre"><?php the_title(); ?></span>
-                                </span>
-                            </a>
+                            <?php amidac_toolkit_carte_projet(); ?>
                         <?php endwhile; ?>
                         <a class="amidac-projet__tous" href="<?php echo esc_url( get_post_type_archive_link( 'amidac_projet' ) ); ?>">
                             <?php esc_html_e( 'Voir tous les projets →', 'amidac-toolkit' ); ?>
