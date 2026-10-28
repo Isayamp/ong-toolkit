@@ -87,43 +87,130 @@ function amidac_toolkit_sc_partenaires( $atts ) {
 add_shortcode( 'amidac_partenaires', 'amidac_toolkit_sc_partenaires' );
 
 /**
- * [amidac_rapports annee="2025" limit="12"]
+ * Documents publiés d'une catégorie. Les anciens rapports sans catégorie comptent comme annuels.
+ */
+function amidac_toolkit_documents( $categorie, $annee = 0, $limit = 100 ) {
+    $meta = array( array( 'key' => '_amidac_categorie', 'value' => $categorie ) );
+    if ( 'annuel' === $categorie ) {
+        $meta = array( 'relation' => 'OR', $meta[0], array( 'key' => '_amidac_categorie', 'compare' => 'NOT EXISTS' ) );
+    }
+    if ( $annee ) {
+        $meta = array( 'relation' => 'AND', array( 'key' => '_amidac_annee', 'value' => $annee ), $meta );
+    }
+
+    $docs = get_posts( array(
+        'post_type'      => 'amidac_rapport',
+        'post_status'    => 'publish',
+        'posts_per_page' => $limit,
+        'orderby'        => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
+        'meta_query'     => $meta,
+    ) );
+
+    if ( 'annuel' === $categorie ) {
+        usort( $docs, function ( $a, $b ) {
+            $ya = (int) get_post_meta( $a->ID, '_amidac_annee', true );
+            $yb = (int) get_post_meta( $b->ID, '_amidac_annee', true );
+            return $ya !== $yb ? $yb <=> $ya : $a->menu_order <=> $b->menu_order;
+        } );
+    }
+    return $docs;
+}
+
+function amidac_toolkit_document_bouton( $post_id ) {
+    $file = get_post_meta( $post_id, '_amidac_fichier_url', true );
+    if ( ! $file ) {
+        return '<span class="amidac-doc__btn amidac-doc__btn--off">' . esc_html__( 'Bientôt disponible', 'amidac-toolkit' ) . '</span>';
+    }
+    return '<a class="amidac-doc__btn" href="' . esc_url( $file ) . '" target="_blank" rel="noopener">'
+        . esc_html__( 'Télécharger', 'amidac-toolkit' ) . '</a>';
+}
+
+/**
+ * Carte d'un document : année, titre, description, date et bouton.
+ */
+function amidac_toolkit_document_carte( $doc ) {
+    $annee   = get_post_meta( $doc->ID, '_amidac_annee', true );
+    $periode = get_post_meta( $doc->ID, '_amidac_periode', true );
+
+    $out = '<article class="amidac-doc">';
+    if ( $annee ) {
+        $out .= '<span class="amidac-pill">' . esc_html( $annee ) . '</span>';
+    }
+    $out .= '<h3 class="amidac-doc__titre">' . esc_html( get_the_title( $doc ) ) . '</h3>';
+    if ( $doc->post_excerpt ) {
+        $out .= '<p class="amidac-doc__desc">' . esc_html( $doc->post_excerpt ) . '</p>';
+    }
+    $out .= '<div class="amidac-doc__pied">';
+    $out .= '<span class="amidac-doc__date">' . esc_html( $periode ) . '</span>';
+    $out .= amidac_toolkit_document_bouton( $doc->ID );
+    $out .= '</div></article>';
+
+    return $out;
+}
+
+/**
+ * Documents institutionnels : un panneau par groupe, une ligne par document.
+ */
+function amidac_toolkit_documents_groupes( $docs ) {
+    $groupes = array();
+    foreach ( $docs as $doc ) {
+        $nom = get_post_meta( $doc->ID, '_amidac_groupe', true );
+        $groupes[ $nom ? $nom : __( 'Documents', 'amidac-toolkit' ) ][] = $doc;
+    }
+
+    $out = '<div class="amidac-docs__groupes">';
+    foreach ( $groupes as $nom => $liste ) {
+        $out .= '<div class="amidac-docs__groupe"><h3>' . esc_html( $nom ) . '</h3><ul>';
+        foreach ( $liste as $doc ) {
+            $file  = get_post_meta( $doc->ID, '_amidac_fichier_url', true );
+            $titre = esc_html( get_the_title( $doc ) );
+            $out  .= '<li>' . ( $file
+                ? '<a href="' . esc_url( $file ) . '" target="_blank" rel="noopener">' . $titre . '</a>'
+                : '<span class="amidac-docs__off">' . $titre . ' <small>' . esc_html__( 'Bientôt disponible', 'amidac-toolkit' ) . '</small></span>' ) . '</li>';
+        }
+        $out .= '</ul></div>';
+    }
+    return $out . '</div>';
+}
+
+/**
+ * [amidac_rapports categorie="annuel|publication|reseau|institutionnel" annee="2024" limit="50" titres="oui"]
+ * Sans catégorie : toutes les sections, avec leur titre, dans l'ordre de la page Rapports & Publications.
  */
 function amidac_toolkit_sc_rapports( $atts ) {
-    $a = shortcode_atts( array( 'annee' => '', 'limit' => 20 ), $atts, 'amidac_rapports' );
+    $a = shortcode_atts( array( 'categorie' => '', 'annee' => '', 'limit' => 100, 'titres' => '' ), $atts, 'amidac_rapports' );
 
-    $extra = array( 'orderby' => array( 'date' => 'DESC' ) );
-    if ( $a['annee'] ) {
-        $extra['meta_query'] = array( array(
-            'key'   => '_amidac_annee',
-            'value' => absint( $a['annee'] ),
-        ) );
+    $cats = amidac_toolkit_rapport_categories();
+    if ( isset( $cats[ $a['categorie'] ] ) ) {
+        $cats   = array( $a['categorie'] => $cats[ $a['categorie'] ] );
+        $titres = in_array( $a['titres'], array( 'oui', '1', 'true' ), true );
+    } else {
+        $titres = 'non' !== $a['titres'];
     }
 
-    $q = amidac_toolkit_query( 'amidac_rapport', absint( $a['limit'] ), $extra );
-    if ( ! $q->have_posts() ) {
-        return '';
-    }
-
-    $out = '<div class="amidac-reports">';
-    while ( $q->have_posts() ) {
-        $q->the_post();
-        $id    = get_the_ID();
-        $file  = get_post_meta( $id, '_amidac_fichier_url', true );
-        $annee = get_post_meta( $id, '_amidac_annee', true );
-        $type  = get_post_meta( $id, '_amidac_type_rapport', true );
-
-        $out .= '<div class="amidac-report">';
-        $out .= '<small>' . esc_html( trim( $type . ' ' . $annee ) ) . '</small>';
-        $out .= '<h3>' . esc_html( get_the_title() ) . '</h3>';
-        if ( $file ) {
-            $out .= '<a class="amidac-btn" href="' . esc_url( $file ) . '" target="_blank" rel="noopener">'
-                . esc_html__( 'Télécharger', 'amidac-toolkit' ) . '</a>';
+    $out = '';
+    foreach ( $cats as $key => $label ) {
+        $docs = amidac_toolkit_documents( $key, absint( $a['annee'] ), absint( $a['limit'] ) );
+        if ( ! $docs ) {
+            continue;
         }
-        $out .= '</div>';
-    }
-    wp_reset_postdata();
 
-    return $out . '</div>';
+        $out .= '<section class="amidac-docs amidac-docs--' . esc_attr( $key ) . '">';
+        if ( $titres ) {
+            $out .= '<h2 class="amidac-docs__titre">' . esc_html( $label ) . '</h2>';
+        }
+        if ( 'institutionnel' === $key ) {
+            $out .= amidac_toolkit_documents_groupes( $docs );
+        } else {
+            $out .= '<div class="amidac-docs__grille">';
+            foreach ( $docs as $doc ) {
+                $out .= amidac_toolkit_document_carte( $doc );
+            }
+            $out .= '</div>';
+        }
+        $out .= '</section>';
+    }
+
+    return $out;
 }
 add_shortcode( 'amidac_rapports', 'amidac_toolkit_sc_rapports' );
