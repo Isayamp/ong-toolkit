@@ -10,9 +10,8 @@
 .amidac-projet__statut { margin-left: 8px; font-size: .85rem; color: #555; }
 .amidac-projet__figure { max-width: 1100px; margin: 0 auto; padding: 0 20px; text-align: center; }
 .amidac-projet__image { display: inline-block; max-width: 100%; width: auto; height: auto; max-height: 460px; object-fit: contain; border-radius: 10px; background: #f4f7fb; }
-.amidac-projet__resume { background: #fff; border: 1px solid #e3e8ef; border-left: 4px solid var(--amidac-primary); border-radius: 8px; padding: 20px 24px; margin-bottom: 32px; }
-.amidac-projet__resume h2 { margin: 0 0 8px; font-size: 1.1rem; }
-.amidac-projet__resume p { margin: 0; color: #444; }
+.amidac-projet__infos h2 { margin: 0 0 10px; font-size: 1.1rem; }
+.amidac-projet__resume { margin: 0 0 16px; color: #444; }
 .amidac-projet__autres { max-width: 1100px; margin: 0 auto; padding: 0 20px 64px; }
 
 .amidac-pill { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: .8rem; font-weight: 600; color: #fff; background: var(--amidac-primary); }

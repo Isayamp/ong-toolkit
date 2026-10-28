@@ -68,16 +68,6 @@ while ( have_posts() ) :
         </header>
 
         <div class="amidac-projet__body">
-            <?php
-            // Résumé : extrait saisi, sinon extrait généré à partir du contenu.
-            $resume = trim( wp_strip_all_tags( get_the_excerpt() ) );
-            if ( $resume ) :
-                ?>
-                <section class="amidac-projet__resume">
-                    <h2><?php esc_html_e( 'Résumé', 'amidac-toolkit' ); ?></h2>
-                    <p><?php echo esc_html( $resume ); ?></p>
-                </section>
-            <?php endif; ?>
             <?php if ( $stats_html ) : ?>
                 <div class="amidac-stats"><?php echo $stats_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
             <?php endif; ?>
@@ -96,7 +86,14 @@ while ( have_posts() ) :
                 </div>
 
                 <aside class="amidac-projet__infos">
-                    <h2><?php esc_html_e( 'En bref', 'amidac-toolkit' ); ?></h2>
+                    <h2><?php esc_html_e( 'Résumé', 'amidac-toolkit' ); ?></h2>
+                    <?php
+                    // Extrait saisi, sinon extrait généré à partir du contenu.
+                    $resume = trim( wp_strip_all_tags( get_the_excerpt() ) );
+                    if ( $resume ) :
+                        ?>
+                        <p class="amidac-projet__resume"><?php echo esc_html( $resume ); ?></p>
+                    <?php endif; ?>
                     <dl>
                         <?php foreach ( $infos as $label => $value ) : ?>
                             <?php if ( $value ) : ?>
