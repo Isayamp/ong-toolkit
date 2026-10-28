@@ -217,7 +217,7 @@ function amidac_toolkit_documents_groupes( $docs ) {
 
 /**
  * Documents nombreux (comptes rendus, missions) : un repli par groupe, une ligne par document.
- * Les groupes sont classés par année la plus récente ; seul le premier est ouvert.
+ * Les groupes sont classés par année la plus récente ; tous sont fermés au départ.
  */
 function amidac_toolkit_documents_replis( $docs ) {
     $groupes = array();
@@ -235,8 +235,7 @@ function amidac_toolkit_documents_replis( $docs ) {
         return $annee_max( $b ) <=> $annee_max( $a );
     } );
 
-    $out    = '<div class="amidac-replis">';
-    $ouvert = true;
+    $out = '<div class="amidac-replis">';
     foreach ( $groupes as $nom => $liste ) {
         // Les documents datés se lisent du plus récent au plus ancien.
         if ( $annee_max( $liste ) && ! array_filter( $liste, function ( $d ) {
@@ -245,7 +244,7 @@ function amidac_toolkit_documents_replis( $docs ) {
             $liste = array_reverse( $liste );
         }
 
-        $out .= '<details class="amidac-repli" data-ouvert="' . ( $ouvert ? '1' : '0' ) . '"' . ( $ouvert ? ' open' : '' ) . '>';
+        $out .= '<details class="amidac-repli" data-ouvert="0">';
         $out .= '<summary><span class="amidac-repli__nom">' . esc_html( $nom ) . '</span><span class="amidac-repli__nb">' . count( $liste ) . '</span></summary><ul class="amidac-repli__liste">';
         foreach ( $liste as $doc ) {
             $out .= '<li' . amidac_toolkit_document_data( $doc ) . '>'
@@ -253,8 +252,7 @@ function amidac_toolkit_documents_replis( $docs ) {
                 . '<span class="amidac-doc__date">' . esc_html( get_post_meta( $doc->ID, '_amidac_periode', true ) ) . '</span>'
                 . amidac_toolkit_document_bouton( $doc->ID ) . '</li>';
         }
-        $out   .= '</ul></details>';
-        $ouvert = false;
+        $out .= '</ul></details>';
     }
 
     return $out . '</div>';
