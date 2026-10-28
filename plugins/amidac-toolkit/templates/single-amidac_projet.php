@@ -131,9 +131,20 @@ while ( have_posts() ) :
                                     the_post_thumbnail( 'thumbnail' );
                                 }
                                 ?>
-                                <span><?php the_title(); ?></span>
+                                <span class="amidac-autre__texte">
+                                    <?php
+                                    $s_autre = get_the_terms( get_the_ID(), 'secteur' );
+                                    if ( $s_autre && ! is_wp_error( $s_autre ) ) :
+                                        ?>
+                                        <span class="amidac-autre__secteur"><?php echo esc_html( $s_autre[0]->name ); ?></span>
+                                    <?php endif; ?>
+                                    <span class="amidac-autre__titre"><?php the_title(); ?></span>
+                                </span>
                             </a>
                         <?php endwhile; ?>
+                        <a class="amidac-projet__tous" href="<?php echo esc_url( get_post_type_archive_link( 'amidac_projet' ) ); ?>">
+                            <?php esc_html_e( 'Voir tous les projets →', 'amidac-toolkit' ); ?>
+                        </a>
                     </section>
                     <?php
                     wp_reset_postdata();
