@@ -20,6 +20,7 @@ $amidac_toolkit_modules = array(
     'post-types',
     'metaboxes',
     'rapports-admin',
+    'rapports-import',
     'templates',
     'shortcodes',
     'elementor',

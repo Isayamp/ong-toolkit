@@ -100,6 +100,8 @@ function amidac_toolkit_rapports_page() {
 
     if ( in_array( $action, array( 'new', 'edit' ), true ) ) {
         amidac_toolkit_rapports_form();
+    } elseif ( 'lot' === $action ) {
+        amidac_toolkit_lot_form();
     } else {
         amidac_toolkit_rapports_list();
     }
@@ -113,6 +115,17 @@ function amidac_toolkit_rapports_notice() {
         'deleted'  => array( 'success', __( 'Document supprimé.', $td ) ),
         'bulk'     => array( 'success', __( 'Action groupée appliquée.', $td ) ),
         'imported' => array( 'success', __( 'Import terminé : les documents déjà présents ont été conservés.', $td ) ),
+        'lot_ok'     => array( 'success', sprintf(
+            /* translators: 1: documents créés, 2: ignorés, 3: erreurs */
+            __( 'Import terminé : %1$d document(s) créé(s), %2$d déjà présent(s) ignoré(s), %3$d erreur(s).', $td ),
+            isset( $_GET['crees'] ) ? absint( $_GET['crees'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification
+            isset( $_GET['ignores'] ) ? absint( $_GET['ignores'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification
+            isset( $_GET['erreurs'] ) ? absint( $_GET['erreurs'] ) : 0 // phpcs:ignore WordPress.Security.NonceVerification
+        ) ),
+        'lot_upload' => array( 'error', __( 'Le fichier n’a pas pu être reçu (taille maximale dépassée ?).', $td ) ),
+        'lot_zip'    => array( 'error', __( 'L’archive ZIP est illisible.', $td ) ),
+        'lot_csv'    => array( 'error', __( 'Le tableau rapports.csv est introuvable ou n’a pas les colonnes « fichier » et « titre ».', $td ) ),
+        'lot_nozip'  => array( 'error', __( 'Ce serveur ne sait pas lire les archives ZIP.', $td ) ),
         'no_title' => array( 'error', __( 'Le titre est obligatoire.', $td ) ),
         'error'    => array( 'error', __( 'L’opération a échoué.', $td ) ),
     );
@@ -192,6 +205,7 @@ function amidac_toolkit_rapports_list() {
     ?>
     <h1 class="wp-heading-inline"><?php esc_html_e( 'Rapports et documents', $td ); ?></h1>
     <a href="<?php echo esc_url( amidac_toolkit_rapports_url( array( 'action' => 'new' ) ) ); ?>" class="page-title-action"><?php esc_html_e( 'Ajouter un document', $td ); ?></a>
+    <a href="<?php echo esc_url( amidac_toolkit_rapports_url( array( 'action' => 'lot' ) ) ); ?>" class="page-title-action"><?php esc_html_e( 'Importer un lot', $td ); ?></a>
     <hr class="wp-header-end">
 
     <ul class="subsubsub">
