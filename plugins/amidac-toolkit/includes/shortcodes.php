@@ -147,6 +147,16 @@ function amidac_toolkit_documents_filtres( $cats ) {
 
     $out = '<div class="amidac-filtres">';
     if ( count( $cats ) > 1 ) {
+        // Libellés courts pour que les boutons et la recherche tiennent sur une ligne.
+        $courts = array(
+            'annuel'         => __( 'Rapports', $td ),
+            'publication'    => __( 'Publications', $td ),
+            'reseau'         => __( 'Réseaux', $td ),
+            'institutionnel' => __( 'Institutionnel', $td ),
+        );
+        foreach ( $cats as $cle => $libelle ) {
+            $cats[ $cle ] = isset( $courts[ $cle ] ) ? $courts[ $cle ] : $libelle;
+        }
         $out .= $groupe( 'categorie', __( 'Catégorie', $td ), $cats, __( 'Tous', $td ) );
     }
 

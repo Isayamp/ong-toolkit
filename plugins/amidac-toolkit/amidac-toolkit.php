@@ -17,6 +17,7 @@ define( 'AMIDAC_TOOLKIT_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AMIDAC_TOOLKIT_URI', plugin_dir_url( __FILE__ ) );
 
 $amidac_toolkit_modules = array(
+    'cache',
     'post-types',
     'metaboxes',
     'rapports-admin',
