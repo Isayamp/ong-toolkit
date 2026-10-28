@@ -131,9 +131,9 @@ function amidac_toolkit_document_data( $doc ) {
 }
 
 /**
- * Barre de recherche et boutons de filtre (catégorie, année), sur une seule ligne.
+ * Boutons de filtre par catégorie à gauche, recherche à droite, sur une seule ligne.
  */
-function amidac_toolkit_documents_filtres( $cats, $annees ) {
+function amidac_toolkit_documents_filtres( $cats ) {
     $td = 'amidac-toolkit';
 
     $groupe = function ( $nom, $label, $choix, $tous ) {
@@ -145,17 +145,15 @@ function amidac_toolkit_documents_filtres( $cats, $annees ) {
         return $out . '</div>';
     };
 
-    $out  = '<div class="amidac-filtres">';
-    $out .= '<input type="search" class="amidac-filtres__recherche" placeholder="' . esc_attr__( 'Rechercher un document…', $td ) . '" aria-label="' . esc_attr__( 'Rechercher un document', $td ) . '">';
-
+    $out = '<div class="amidac-filtres">';
     if ( count( $cats ) > 1 ) {
         $out .= $groupe( 'categorie', __( 'Catégorie', $td ), $cats, __( 'Tous', $td ) );
     }
 
-    if ( $annees ) {
-        rsort( $annees );
-        $out .= $groupe( 'annee', __( 'Année', $td ), array_combine( $annees, $annees ), __( 'Toutes les années', $td ) );
-    }
+    $out .= '<label class="amidac-filtres__champ">'
+        . '<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+        . '<input type="search" class="amidac-filtres__recherche" placeholder="' . esc_attr__( 'Rechercher un document…', $td ) . '" aria-label="' . esc_attr__( 'Rechercher un document', $td ) . '">'
+        . '</label>';
 
     return $out . '</div><p class="amidac-filtres__vide" hidden>' . esc_html__( 'Aucun document ne correspond à votre recherche.', $td ) . '</p>';
 }
@@ -235,19 +233,11 @@ function amidac_toolkit_sc_rapports( $atts ) {
         $filtres = 'non' !== $a['filtres'];
     }
 
-    $out    = '';
-    $annees = array();
+    $out = '';
     foreach ( $cats as $key => $label ) {
         $docs = amidac_toolkit_documents( $key, absint( $a['annee'] ), absint( $a['limit'] ) );
         if ( ! $docs ) {
             continue;
-        }
-
-        foreach ( $docs as $doc ) {
-            $annee = get_post_meta( $doc->ID, '_amidac_annee', true );
-            if ( $annee ) {
-                $annees[ $annee ] = (int) $annee;
-            }
         }
 
         $out .= '<section class="amidac-docs amidac-docs--' . esc_attr( $key ) . '" data-categorie="' . esc_attr( $key ) . '">';
@@ -273,6 +263,6 @@ function amidac_toolkit_sc_rapports( $atts ) {
     $js = AMIDAC_TOOLKIT_DIR . 'assets/js/rapports-front.js';
     wp_enqueue_script( 'amidac-rapports-front', AMIDAC_TOOLKIT_URI . 'assets/js/rapports-front.js', array(), AMIDAC_TOOLKIT_VERSION . '.' . filemtime( $js ), true );
 
-    return '<div class="amidac-rapports-bloc">' . amidac_toolkit_documents_filtres( $cats, array_values( $annees ) ) . $out . '</div>';
+    return '<div class="amidac-rapports-bloc">' . amidac_toolkit_documents_filtres( $cats ) . $out . '</div>';
 }
 add_shortcode( 'amidac_rapports', 'amidac_toolkit_sc_rapports' );

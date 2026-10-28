@@ -8,7 +8,7 @@
         var recherche = bloc.querySelector('.amidac-filtres__recherche');
         var vide = bloc.querySelector('.amidac-filtres__vide');
         var sections = bloc.querySelectorAll('.amidac-docs');
-        var choix = { categorie: '', annee: '' };
+        var choix = { categorie: '' };
 
         function filtrer() {
             var terme = normaliser(recherche.value.trim());
@@ -18,8 +18,7 @@
                 var visibles = 0;
 
                 section.querySelectorAll('[data-texte]').forEach(function (doc) {
-                    var ok = (!terme || normaliser(doc.dataset.texte).indexOf(terme) > -1)
-                        && (!choix.annee || doc.dataset.annee === choix.annee);
+                    var ok = !terme || normaliser(doc.dataset.texte).indexOf(terme) > -1;
                     doc.hidden = !ok;
                     if (ok) {
                         visibles++;

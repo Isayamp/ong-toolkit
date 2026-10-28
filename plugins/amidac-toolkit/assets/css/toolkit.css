@@ -67,13 +67,15 @@
 /* Rapports et documents */
 .amidac-docs { margin: 0 0 48px; }
 .amidac-rapports-bloc [hidden] { display: none !important; }
-.amidac-filtres { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin: 0 0 32px; padding: 0 0 18px; border-bottom: 1px solid #d5dbe5; }
-.amidac-filtres__recherche { flex: 0 1 260px; min-width: 0; padding: 9px 12px; border: 1px solid #b8c1cf; border-radius: 4px; background: #fff; font-size: .95rem; }
-.amidac-filtres__groupe { display: flex; flex-wrap: wrap; gap: 6px; }
-.amidac-filtres__groupe button { padding: 7px 12px; border: 1px solid #c5cdd9; border-radius: 4px; background: transparent; color: inherit; font-size: .9rem; cursor: pointer; }
-.amidac-filtres__groupe button:hover { border-color: var(--amidac-primary); }
-.amidac-filtres__groupe button[aria-pressed="true"] { border-color: var(--amidac-primary); background: var(--amidac-primary); color: #fff; }
-.amidac-filtres__groupe button:focus-visible, .amidac-filtres__recherche:focus-visible { outline: 2px solid var(--amidac-secondary); outline-offset: 2px; }
+.amidac-filtres { --filtre-actif: #1e7a3c; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 32px; padding: 20px 24px; background: #fff; border-radius: 6px; box-shadow: 0 1px 6px rgba(0, 0, 0, .1); }
+.amidac-filtres__groupe { display: flex; flex-wrap: wrap; gap: 10px; }
+.amidac-filtres__groupe button { padding: 10px 22px; border: 1px solid #e1e5ea; border-radius: 999px; background: #fff; color: #444; font: inherit; font-size: .95rem; letter-spacing: .04em; cursor: pointer; }
+.amidac-filtres__groupe button:hover { border-color: var(--filtre-actif); }
+.amidac-filtres__groupe button[aria-pressed="true"] { border-color: var(--filtre-actif); background: var(--filtre-actif); color: #fff; }
+.amidac-filtres__champ { display: flex; align-items: center; gap: 10px; flex: 0 1 320px; min-width: 0; margin-left: auto; padding: 0 18px; border: 1px solid #e1e5ea; border-radius: 999px; background: #fff; color: #333; }
+.amidac-filtres__recherche { flex: 1; min-width: 0; padding: 11px 0; border: 0; background: transparent; font: inherit; font-size: .95rem; box-shadow: none; }
+.amidac-filtres__recherche:focus { outline: none; box-shadow: none; }
+.amidac-filtres__champ:focus-within, .amidac-filtres__groupe button:focus-visible { outline: 2px solid var(--filtre-actif); outline-offset: 2px; }
 .amidac-filtres__vide { padding: 24px 0; color: #6b7280; }
 .amidac-docs__titre { margin: 0 0 20px; font-size: 1.5rem; color: var(--amidac-dark); }
 .amidac-docs__grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
