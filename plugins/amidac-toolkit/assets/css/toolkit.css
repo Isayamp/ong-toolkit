@@ -66,6 +66,11 @@
 
 /* Rapports et documents */
 .amidac-docs { margin: 0 0 48px; }
+.amidac-rapports-bloc [hidden] { display: none !important; }
+.amidac-filtres { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 32px; padding: 16px; background: #f4f7fb; border-radius: 14px; }
+.amidac-filtres input, .amidac-filtres select { padding: 10px 14px; border: 1px solid #d5dbe5; border-radius: 8px; background: #fff; font-size: .95rem; }
+.amidac-filtres__recherche { flex: 1 1 240px; }
+.amidac-filtres__vide { padding: 24px; text-align: center; color: #6b7280; }
 .amidac-docs__titre { margin: 0 0 20px; font-size: 1.5rem; color: var(--amidac-dark); }
 .amidac-docs__grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 .amidac-doc { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 22px; background: #fff; border: 1px solid #e3e8ef; border-left: 4px solid var(--amidac-primary); border-radius: 14px; box-shadow: 0 2px 10px rgba(0, 0, 0, .05); }

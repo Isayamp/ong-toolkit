@@ -20,7 +20,7 @@ Menu **Rapports** (espace dédié, hors éditeur d'articles).
 - **Premier démarrage** : bouton « Importer la structure existante » crée les 18 documents actuels de la page, sans fichier. Il reste à rattacher chaque PDF.
 - Sans fichier, le site affiche « Bientôt disponible » au lieu d'un bouton mort.
 
-Affichage : `[amidac_rapports]` (toutes les sections), `[amidac_rapports categorie="annuel"]`, `[amidac_rapports categorie="reseau" titres="oui"]`, `[amidac_rapports annee="2024"]`.
+Affichage : `[amidac_rapports]` (toutes les sections), avec barre de recherche et filtres catégorie et année (`filtres="non"` pour les masquer), `[amidac_rapports categorie="annuel"]`, `[amidac_rapports categorie="reseau" titres="oui"]`, `[amidac_rapports annee="2024"]`.
 Pour la page Rapports & Publications : dans Elementor, remplacer le widget HTML par un widget Shortcode contenant `[amidac_rapports]` (garder le hero et la section de contact).
 
 ## Dans Elementor
