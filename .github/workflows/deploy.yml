@@ -1,0 +1,41 @@
+name: Déploiement sur le site
+
+# Déclenchement manuel (onglet Actions > Run workflow) ou à la publication d'un tag vX.Y.Z
+on:
+  workflow_dispatch:
+    inputs:
+      cible:
+        description: "Que déployer ?"
+        type: choice
+        options: [plugin, theme, les-deux]
+        default: plugin
+  push:
+    tags: ['v*']
+
+jobs:
+  deployer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Envoyer par SFTP
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_PORT: ${{ secrets.SFTP_PORT }}
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+          WP_CONTENT: ${{ secrets.SFTP_WP_CONTENT }}
+          CIBLE: ${{ github.event.inputs.cible || 'les-deux' }}
+        run: |
+          set -e
+          commandes="set sftp:auto-confirm yes; set net:max-retries 2;"
+          if [ "$CIBLE" != "theme" ]; then
+            commandes="$commandes mirror -R --delete --verbose plugins/amidac-toolkit $WP_CONTENT/plugins/amidac-toolkit;"
+          fi
+          if [ "$CIBLE" != "plugin" ]; then
+            commandes="$commandes mirror -R --delete --verbose theme/amidac-kadence-child $WP_CONTENT/themes/amidac-kadence-child;"
+          fi
+          lftp -u "$SFTP_USER,$SFTP_PASSWORD" -p "${SFTP_PORT:-22}" "sftp://$SFTP_HOST" -e "$commandes bye"
