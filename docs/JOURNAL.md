@@ -13,4 +13,5 @@
 - Déploiement SFTP via GitHub Actions (accès SSH Hostinger, port 65002) ; CSS versionné par date de modification pour éviter le cache.
 - Rapports : espace de gestion dédié dans l'admin (liste, formulaire, médiathèque, actions groupées, import), type de contenu masqué de l'éditeur d'articles.
 - Rapports : nouveau shortcode `[amidac_rapports]` (cartes par catégorie, panneaux groupés pour les documents institutionnels).
+- Rapports : écran « Importer un lot » (ZIP de PDF + rapports.csv). Premier lot préparé : 70 Word et 6 PDF reçus, 55 documents retenus après retrait des doublons, 28,6 Mo ramenés à 19,4 Mo.
 

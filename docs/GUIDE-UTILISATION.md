@@ -19,6 +19,10 @@ Menu **Rapports** (espace dédié, hors éditeur d'articles).
 - **Ajouter un document** : titre, catégorie, description, fichier (bouton « Choisir dans la médiathèque »), date affichée, ordre, visibilité. Les champs année/type/groupe n'apparaissent que pour les catégories concernées.
 - **Premier démarrage** : bouton « Importer la structure existante » crée les 18 documents actuels de la page, sans fichier. Il reste à rattacher chaque PDF.
 - Sans fichier, le site affiche « Bientôt disponible » au lieu d'un bouton mort.
+- **Importer un lot** (bouton en haut de la liste) : envoyer une archive ZIP contenant les PDF et un tableau `rapports.csv` (colonnes `fichier ; titre ; categorie ; type ; annee ; date_affichee ; groupe ; description`). Chaque ligne crée un document complet, fichier compris, dans la médiathèque. Un document déjà présent (même titre, même catégorie) est ignoré, donc l'import peut être relancé sans doublon. Case « brouillon » pour vérifier avant de publier.
+
+### Préparer un lot (sur le PC)
+Les Word sont convertis en PDF, puis le PDF est allégé : images réduites à 130 dpi, polices réduites aux caractères utilisés, structure nettoyée. Le titre et l'auteur sont écrits dans le PDF. Les noms de fichier sont explicites, par exemple `forum-nundu-compte-rendu-n22-2025-10-07.pdf`. Le titre, la date, le numéro, le lieu et les participants sont lus dans le contenu du document. Les doublons exacts sont écartés. Les originaux ne sont jamais modifiés ; les PDF prêts sont écrits dans un dossier à part. La compression se fait sur le PC, pas sur l'hébergement.
 
 Affichage : `[amidac_rapports]` (toutes les sections), avec barre de recherche et filtres catégorie et année (`filtres="non"` pour les masquer), `[amidac_rapports categorie="annuel"]`, `[amidac_rapports categorie="reseau" titres="oui"]`, `[amidac_rapports annee="2024"]`.
 Pour la page Rapports & Publications : dans Elementor, remplacer le widget HTML par un widget Shortcode contenant `[amidac_rapports]` (garder le hero et la section de contact).
