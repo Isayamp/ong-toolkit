@@ -131,28 +131,30 @@ function amidac_toolkit_document_data( $doc ) {
 }
 
 /**
- * Barre de recherche, filtre par catégorie et filtre par année.
+ * Barre de recherche et boutons de filtre (catégorie, année), sur une seule ligne.
  */
 function amidac_toolkit_documents_filtres( $cats, $annees ) {
-    $td  = 'amidac-toolkit';
-    $out = '<div class="amidac-filtres">';
+    $td = 'amidac-toolkit';
+
+    $groupe = function ( $nom, $label, $choix, $tous ) {
+        $out = '<div class="amidac-filtres__groupe" role="group" data-filtre="' . esc_attr( $nom ) . '" aria-label="' . esc_attr( $label ) . '">';
+        $out .= '<button type="button" data-valeur="" aria-pressed="true">' . esc_html( $tous ) . '</button>';
+        foreach ( $choix as $valeur => $texte ) {
+            $out .= '<button type="button" data-valeur="' . esc_attr( $valeur ) . '" aria-pressed="false">' . esc_html( $texte ) . '</button>';
+        }
+        return $out . '</div>';
+    };
+
+    $out  = '<div class="amidac-filtres">';
     $out .= '<input type="search" class="amidac-filtres__recherche" placeholder="' . esc_attr__( 'Rechercher un document…', $td ) . '" aria-label="' . esc_attr__( 'Rechercher un document', $td ) . '">';
 
     if ( count( $cats ) > 1 ) {
-        $out .= '<select class="amidac-filtres__categorie" aria-label="' . esc_attr__( 'Catégorie', $td ) . '"><option value="">' . esc_html__( 'Toutes les catégories', $td ) . '</option>';
-        foreach ( $cats as $key => $label ) {
-            $out .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $label ) . '</option>';
-        }
-        $out .= '</select>';
+        $out .= $groupe( 'categorie', __( 'Catégorie', $td ), $cats, __( 'Tous', $td ) );
     }
 
     if ( $annees ) {
         rsort( $annees );
-        $out .= '<select class="amidac-filtres__annee" aria-label="' . esc_attr__( 'Année', $td ) . '"><option value="">' . esc_html__( 'Toutes les années', $td ) . '</option>';
-        foreach ( $annees as $annee ) {
-            $out .= '<option value="' . esc_attr( $annee ) . '">' . esc_html( $annee ) . '</option>';
-        }
-        $out .= '</select>';
+        $out .= $groupe( 'annee', __( 'Année', $td ), array_combine( $annees, $annees ), __( 'Toutes les années', $td ) );
     }
 
     return $out . '</div><p class="amidac-filtres__vide" hidden>' . esc_html__( 'Aucun document ne correspond à votre recherche.', $td ) . '</p>';
