@@ -12,6 +12,7 @@
 
 ## À faire ensuite
 - Tester sur le site, puis valider l'affichage de la fiche projet.
-- Saisir équipe, partenaires et rapports dans l'admin et remplacer le code en dur des pages.
+- Importer puis rattacher les PDF des rapports, et remplacer le HTML en dur de la page Rapports & Publications par `[amidac_rapports]`.
+- Saisir équipe et partenaires dans l'admin et remplacer le code en dur des pages.
 - Retirer du thème le code CPT/métaboxes devenu redondant (une fois le plugin validé en production).
 - Généralisation : renommer le préfixe `amidac_` en préfixe neutre + page de réglages.
